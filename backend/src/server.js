@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const authRoutes = require('./routes/authRoutes');
-const { createUsersTable } = require('../migrations');
+const { createUsersTable } = require('../migrations/createTables');
 
 const pool = new Pool({
   user: process.env.DB_USER,
