@@ -94,6 +94,32 @@ cd backend
 npm test
 ```
 
+**Test Coverage:**
+- Password Hashing (4 tests)
+  - Hash creates a hash
+  - Hash is different each time (salt)
+  - Compare returns true for correct password
+  - Compare returns false for wrong password
+
+- Auth Controller - Register (5 tests)
+  - Returns 400 if fields missing
+  - Returns 400 for invalid email
+  - Returns 400 for weak password
+  - Returns 400 if email exists
+  - Creates user successfully
+
+- Auth Controller - Login (4 tests)
+  - Returns 400 if fields missing
+  - Returns 401 for non-existent email
+  - Returns 401 for wrong password
+  - Logs in successfully
+
+- Auth Controller - AdminLogin (2 tests)
+  - Returns 401 for non-admin user
+  - Admin logs in successfully
+
+**Total: 15 unit tests**
+
 ---
 
 ## API Endpoints
