@@ -93,12 +93,6 @@ npm run dev
 cd backend
 npm test
 ```
-
-**26 unit tests** covering:
-- Password Hashing (bcrypt)
-- Auth Service (business logic)
-- Auth Controller (request/response)
-
 ---
 
 ## API Endpoints
