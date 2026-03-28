@@ -15,15 +15,17 @@ function Landing() {
           <div className="auth-form">
             <h2>Petgram</h2>
             <p>Find your perfect companion</p>
-            <Link to="/register" className="btn-primary">Sign up</Link>
+            <form>
+              <Link to="/register" className="btn-primary" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', padding: '8px' }}>Sign up</Link>
+            </form>
             <div className="divider"><span>OR</span></div>
-            <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-              <Link to="/login" style={{ fontSize: '14px', color: '#00376b' }}>Log in</Link>
+            <div style={{ textAlign: 'center' }}>
+              <Link to="/login" style={{ fontSize: '14px', color: '#00376b', textDecoration: 'none' }}>Log in</Link>
             </div>
           </div>
           
           <div className="auth-form" style={{ marginTop: '16px', padding: '20px', textAlign: 'center' }}>
-            <p style={{ margin: 0 }}>
+            <p style={{ margin: 0, fontSize: '14px' }}>
               Don't have an account? <Link to="/register" className="auth-link">Sign up</Link>
             </p>
           </div>
