@@ -9,7 +9,8 @@ function Login() {
   });
   const [errors, setErrors] = useState({});
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { login, adminLogin } = useAuth();
   const navigate = useNavigate();
 
   const validate = () => {
@@ -32,8 +33,12 @@ function Login() {
     }
 
     try {
-      await login(formData.email, formData.password);
-      navigate('/');
+      if (isAdmin) {
+        await adminLogin(formData.email, formData.password);
+      } else {
+        await login(formData.email, formData.password);
+      }
+      navigate('/home');
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed');
     }
@@ -48,9 +53,9 @@ function Login() {
     <div className="main-container">
       <div className="landing">
         <div className="hero-content">
-          <div className="auth-form">
+            <div className="auth-form">
             <h2>Petgram</h2>
-            <p>Log in to see photos of your future pet</p>
+            <p>{isAdmin ? 'Admin Login' : 'Log in to see photos of your future pet'}</p>
             {error && <div className="form-error">{error}</div>}
             <form onSubmit={handleSubmit}>
               <div className="input-group">
@@ -80,6 +85,14 @@ function Login() {
             <p className="auth-switch">
               <Link to="/register" className="auth-link">Sign up</Link>
             </p>
+            <div className="divider"><span>or</span></div>
+            <button 
+              type="button" 
+              className="btn-secondary"
+              onClick={() => setIsAdmin(!isAdmin)}
+            >
+              {isAdmin ? 'Switch to User Login' : 'Login as Admin'}
+            </button>
           </div>
         </div>
       </div>

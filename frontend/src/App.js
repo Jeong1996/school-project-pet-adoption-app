@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -21,6 +22,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Profile />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/home" 
+            element={
+              <PrivateRoute>
+                <Home />
               </PrivateRoute>
             } 
           />
