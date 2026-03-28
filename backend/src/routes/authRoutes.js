@@ -1,3 +1,4 @@
+// Author: Yu Gyeom Jeong
 const express = require('express');
 const router = express.Router();
 const { register, login, adminLogin } = require('../controllers/authController');

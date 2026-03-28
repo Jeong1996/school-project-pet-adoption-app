@@ -1,3 +1,4 @@
+// Author: Yu Gyeom Jeong
 const bcrypt = require('bcryptjs');
 const pool = require('../db');
 const { usersQueries } = require('../sql/users');
