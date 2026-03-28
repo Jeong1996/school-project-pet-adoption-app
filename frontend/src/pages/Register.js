@@ -53,60 +53,66 @@ function Register() {
   };
 
   return (
-    <div className="auth-form">
-      <h2>Create Your Account</h2>
-      <p>Join us to find your perfect companion</p>
-      {error && <div className="form-error">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          {errors.name && <span className="error-message">{errors.name}</span>}
+    <div className="main-container">
+      <div className="landing">
+        <div className="hero-content">
+          <div className="auth-form">
+            <h2>Petgram</h2>
+            <p>Sign up to see photos of pets</p>
+            {error && <div className="form-error">{error}</div>}
+            <form onSubmit={handleSubmit}>
+              <div className="input-group">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                {errors.name && <span className="error-message">{errors.name}</span>}
+              </div>
+              
+              <div className="input-group">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                {errors.email && <span className="error-message">{errors.email}</span>}
+              </div>
+              
+              <div className="input-group">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                {errors.password && <span className="error-message">{errors.password}</span>}
+              </div>
+              
+              <div className="input-group">
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+              </div>
+              
+              <button type="submit" className="btn-primary">Sign up</button>
+            </form>
+            <p className="auth-switch">
+              Have an account? <Link to="/login" className="auth-link">Log in</Link>
+            </p>
+          </div>
         </div>
-        
-        <div className="input-group">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errors.email && <span className="error-message">{errors.email}</span>}
-        </div>
-        
-        <div className="input-group">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          {errors.password && <span className="error-message">{errors.password}</span>}
-        </div>
-        
-        <div className="input-group">
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-          {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
-        </div>
-        
-        <button type="submit" className="btn-primary">Create Account</button>
-      </form>
-      <p className="auth-switch">
-        Already have an account? <Link to="/login" className="auth-link">Sign in</Link>
-      </p>
+      </div>
     </div>
   );
 }

@@ -45,38 +45,44 @@ function Login() {
   };
 
   return (
-    <div className="auth-form">
-      <h2>Welcome Back</h2>
-      <p>Sign in to continue</p>
-      {error && <div className="form-error">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errors.email && <span className="error-message">{errors.email}</span>}
+    <div className="main-container">
+      <div className="landing">
+        <div className="hero-content">
+          <div className="auth-form">
+            <h2>Petgram</h2>
+            <p>Log in to see photos of your future pet</p>
+            {error && <div className="form-error">{error}</div>}
+            <form onSubmit={handleSubmit}>
+              <div className="input-group">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                {errors.email && <span className="error-message">{errors.email}</span>}
+              </div>
+              
+              <div className="input-group">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                {errors.password && <span className="error-message">{errors.password}</span>}
+              </div>
+              
+              <button type="submit" className="btn-primary">Log in</button>
+            </form>
+            <p className="auth-switch">
+              Don't have an account? <Link to="/register" className="auth-link">Sign up</Link>
+            </p>
+          </div>
         </div>
-        
-        <div className="input-group">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          {errors.password && <span className="error-message">{errors.password}</span>}
-        </div>
-        
-        <button type="submit" className="btn-primary">Sign In</button>
-      </form>
-      <p className="auth-switch">
-        Don't have an account? <Link to="/register" className="auth-link">Create one</Link>
-      </p>
+      </div>
     </div>
   );
 }
