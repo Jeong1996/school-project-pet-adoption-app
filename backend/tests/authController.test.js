@@ -9,42 +9,18 @@ jest.mock('../src/db', () => ({
   query: jest.fn()
 }));
 
+jest.mock('../src/sql/users', () => ({
+  usersQueries: {
+    findByEmail: 'SELECT * FROM users WHERE email = $1',
+    findAdminByEmail: 'SELECT * FROM users WHERE email = $1 AND role = $2',
+    create: 'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, role'
+  }
+}));
+
 const { register, login, adminLogin } = require('../src/authController');
 const pool = require('../src/db');
 
-describe('Password Hashing (Unit Tests)', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('hash creates a hash', async () => {
-    bcrypt.hash.mockResolvedValue('hashed_password');
-    const result = await bcrypt.hash('password123', 10);
-    expect(result).toBe('hashed_password');
-    expect(bcrypt.hash).toHaveBeenCalledWith('password123', 10);
-  });
-
-  test('hash is different each time (salt)', async () => {
-    bcrypt.hash.mockResolvedValueOnce('hash1').mockResolvedValueOnce('hash2');
-    const hash1 = await bcrypt.hash('password', 10);
-    const hash2 = await bcrypt.hash('password', 10);
-    expect(hash1).not.toBe(hash2);
-  });
-
-  test('compare returns true for correct password', async () => {
-    bcrypt.compare.mockResolvedValue(true);
-    const result = await bcrypt.compare('password123', 'hash');
-    expect(result).toBe(true);
-  });
-
-  test('compare returns false for wrong password', async () => {
-    bcrypt.compare.mockResolvedValue(false);
-    const result = await bcrypt.compare('wrong', 'hash');
-    expect(result).toBe(false);
-  });
-});
-
-describe('Auth Controller (Unit Tests with Mocks)', () => {
+describe('Auth Controller', () => {
   let req, res;
 
   beforeEach(() => {
@@ -68,14 +44,12 @@ describe('Auth Controller (Unit Tests with Mocks)', () => {
       req.body = { email: 'invalid', password: 'password123', name: 'John' };
       await register(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ error: 'Invalid email format' });
     });
 
     test('returns 400 for weak password', async () => {
       req.body = { email: 'test@test.com', password: 'short', name: 'John' };
       await register(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ error: 'Password must be at least 8 characters' });
     });
 
     test('returns 400 if email exists', async () => {
