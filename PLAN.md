@@ -15,7 +15,7 @@
 |-------------|------|----------|
 | Yu Gyeom Jeong | Lead Full Stack Developer | Authenticate, Apply |
 | You Wu | Full Stack Developer | Search |
-| Xinyi Gu | Full Stack Developer | Front-end UI, input validation, responsive design |
+| Xinyi Gu | Full Stack Developer | View, Manage |
 
 ---
 
@@ -45,7 +45,7 @@
 - Application approval/rejection logic
 - Business logic implementation
 
-### 5. Manage
+### 5. Manage (Xinyi Gu)
 - Update pet listings after adoption
 - Archive adopted pets
 - Remove from available list
@@ -159,10 +159,12 @@ CREATE TABLE applications (
 - Empty results handling
 - Invalid input handling
 
-### Adopter Profile Validation Tests (Xinyi Gu)
-- Missing required fields
-- Invalid email format
-- Invalid phone format
+### View & Manage Tests (Xinyi Gu)
+- Pet listing display
+- Pet details rendering
+- Listing update functionality
+- Archive functionality
+- Available list management
 
 ### Adoption Application Tests (Yu Gyeom Jeong)
 - Complete valid application
@@ -197,17 +199,15 @@ CREATE TABLE applications (
 2. Database query optimization
 3. Write unit tests for search
 
-### Phase 3: Frontend (Xinyi Gu)
+### Phase 3: View Feature (Xinyi Gu)
 1. Initialize React project
 2. Set up routing
-3. Build authentication UI
-4. Build pet listing and search UI
-5. Build application form
-6. Input validation
-7. Responsive design
-8. Write unit tests
+3. Build pet listing UI
+4. Build pet details page
+5. Responsive design
+6. Write unit tests
 
-### Phase 4: Management Feature
+### Phase 4: Manage Feature (Xinyi Gu)
 1. Update pet status after adoption
 2. Archive functionality
 3. Integration testing
