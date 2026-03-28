@@ -20,7 +20,7 @@ function Landing() {
             </form>
             <div className="divider"><span>OR</span></div>
             <div style={{ textAlign: 'center' }}>
-              <Link to="/login" style={{ fontSize: '14px', color: '#00376b', textDecoration: 'none' }}>Log in</Link>
+              <Link to="/login" style={{ fontSize: '14px', color: '#4a7c59', textDecoration: 'none' }}>Log in</Link>
             </div>
           </div>
           
