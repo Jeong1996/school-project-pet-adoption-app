@@ -1,0 +1,530 @@
+/* Nature-inspired design tokens */
+:root {
+  --nature-gradient: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 50%, #8fbc8f 100%);
+  --nature-green: #4a7c59;
+  --nature-green-light: #6b9b7a;
+  --nature-dark: #2d4a3e;
+  --nature-cream: #f8f6f0;
+  --nature-cream-light: #fdfcfa;
+  --nature-white: #ffffff;
+  --nature-earth: #8b7355;
+  --nature-error: #c0392b;
+  --nature-border: #d4cfc4;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--nature-cream);
+  color: var(--nature-dark);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Navbar - Nature style */
+.navbar {
+  background: var(--nature-cream-light);
+  border-bottom: 1px solid var(--nature-border);
+  box-shadow: 0 2px 8px rgba(45, 74, 62, 0.08);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.navbar-content {
+  max-width: 975px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.nav-logo {
+  font-family: 'Billabong', cursive;
+  font-size: 28px;
+  color: var(--nature-dark);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--nature-dark);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav-links a:hover {
+  color: var(--nature-green);
+}
+
+.nav-btn-primary {
+  background: var(--nature-green);
+  color: white !important;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+  text-decoration: none;
+}
+
+.nav-btn-primary:hover {
+  opacity: 0.8;
+}
+
+.welcome-text {
+  font-size: 14px;
+  color: var(--nature-earth);
+}
+
+/* Main Container */
+.main-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 84px;
+  min-height: 100vh;
+}
+
+/* Landing Page */
+.landing {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 935px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.hero-image {
+  flex: 1;
+  max-width: 450px;
+  min-width: 280px;
+  display: none;
+}
+
+@media (min-width: 876px) {
+  .hero-image {
+    display: block;
+  }
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 400px;
+  min-width: 280px;
+}
+
+.hero h1 {
+  font-family: 'Billabong', cursive;
+  font-size: 50px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.hero p {
+  font-size: 17px;
+  color: var(--nature-earth);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* Auth Form - Nature Card Style */
+.auth-form {
+  background: var(--nature-cream-light);
+  border: 1px solid var(--nature-border);
+  border-radius: 12px;
+  padding: 40px 40px 24px;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.auth-form h2 {
+  font-family: 'Billabong', cursive;
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.auth-form > p {
+  text-align: center;
+  color: var(--nature-earth);
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.auth-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 10px 8px;
+  font-size: 12px;
+  border: 1px solid var(--nature-gray);
+  border-radius: 4px;
+  background: var(--nature-light-gray);
+  transition: all 0.2s;
+  outline: none;
+}
+
+.auth-form input:focus {
+  border-color: var(--nature-green-light);
+}
+
+.auth-form input::placeholder {
+  color: var(--nature-earth);
+}
+
+/* Buttons */
+.btn-primary {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: var(--nature-green);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 8px;
+}
+
+.btn-primary:hover {
+  opacity: 0.8;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--nature-green);
+  background: transparent;
+  border: 1px solid var(--nature-green);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.btn-secondary:hover {
+  background: var(--nature-green);
+  color: white;
+}
+
+/* Links */
+.auth-link {
+  color: var(--nature-green);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.auth-link:hover {
+  color: var(--nature-green);
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+  color: var(--nature-dark);
+  font-size: 14px;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--nature-gray);
+}
+
+.divider span {
+  padding: 0 16px;
+  color: var(--nature-earth);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Error Messages */
+.error-message {
+  color: var(--nature-error);
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.form-error {
+  background: #fff5f5;
+  border: 1px solid var(--nature-error);
+  color: var(--nature-error);
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Profile Page */
+.profile {
+  max-width: 935px;
+  margin: 0 auto;
+  padding: 84px 20px 40px;
+  width: 100%;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.profile-image {
+  flex: 0 0 150px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--nature-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.profile-image span {
+  color: white;
+  font-size: 48px;
+  font-weight: 300;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h2 {
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.profile-details {
+  display: flex;
+  gap: 40px;
+}
+
+.profile-details div {
+  font-size: 16px;
+}
+
+.profile-details span {
+  font-weight: 600;
+}
+
+.profile button {
+  margin-top: 20px;
+}
+
+/* Features Section */
+.features-section {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 40px;
+  border-top: 1px solid var(--nature-gray);
+}
+
+.features-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.features-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.feature-item {
+  color: var(--nature-green);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.feature-item:hover {
+  color: var(--nature-green-light);
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 14px;
+  color: var(--nature-earth);
+}
+
+/* Home Page */
+.home {
+  max-width: 935px;
+  margin: 0 auto;
+  padding: 84px 20px 40px;
+  width: 100%;
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.home-header h1 {
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--nature-dark);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.dashboard-card {
+  background: var(--nature-cream-light);
+  border: 1px solid var(--nature-border);
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(45, 74, 62, 0.12);
+}
+
+.card-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.dashboard-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--nature-dark);
+}
+
+.dashboard-card p {
+  font-size: 14px;
+  color: var(--nature-earth);
+  margin-bottom: 20px;
+}
+
+.dashboard-card .btn-primary {
+  width: auto;
+  padding: 10px 24px;
+}
+
+.account-section {
+  background: var(--nature-cream-light);
+  border: 1px solid var(--nature-border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.account-section h2 {
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 24px;
+  color: var(--nature-dark);
+}
+
+.account-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.account-item {
+  display: flex;
+  gap: 12px;
+}
+
+.account-item .label {
+  font-weight: 600;
+  color: var(--nature-dark);
+  min-width: 80px;
+}
+
+.account-item .value {
+  color: var(--nature-earth);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-content {
+    padding: 0 16px;
+  }
+  
+  .auth-form {
+    border: none;
+    background: transparent;
+    padding: 20px 0;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .profile-details {
+    justify-content: center;
+    gap: 20px;
+  }
+}
