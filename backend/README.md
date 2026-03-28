@@ -1,5 +1,29 @@
 # Pet Adoption Platform - Backend
 
+## Quick Start
+
+```bash
+# 1. Start PostgreSQL
+brew services start postgresql
+
+# 2. Create database
+createdb pet_adoption
+
+# 3. Install dependencies
+cd backend
+npm install
+
+# 4. Start server
+npm run dev
+
+# 5. Verify it works
+curl -X POST http://localhost:3001/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@test.com","password":"password123","name":"Test User"}'
+```
+
+---
+
 ## Prerequisites
 
 - **Node.js** (v18 or higher)
@@ -8,8 +32,6 @@
 ---
 
 ## Installation
-
-### 1. Install dependencies
 
 ```bash
 cd backend
@@ -28,12 +50,14 @@ npm install
 - jest: ^30.3.0
 - supertest: ^7.2.2
 
-### 2. Configure environment variables
+---
+
+## Configuration
 
 Edit `backend/.env`:
 
 ```env
-PORT=5000
+PORT=3001
 DB_USER=postgres
 DB_PASSWORD=your_password
 DB_HOST=localhost
@@ -43,46 +67,22 @@ DB_NAME=pet_adoption
 
 ---
 
-## Starting the Database
+## Running the Application
 
-### Option A: Using Homebrew (macOS)
-
+### Start Database
 ```bash
-# Start PostgreSQL
+# Using Homebrew
 brew services start postgresql
-
-# Create the database
 createdb pet_adoption
+
+# Or using Docker
+docker run --name pet-adoption-db -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=pet_adoption -p 5432:5432 -d postgres
 ```
 
-### Option B: Using Docker
-
-```bash
-docker run --name pet-adoption-db \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=pet_adoption \
-  -p 5432:5432 \
-  -d postgres
-```
-
----
-
-## Starting the Backend Server
-
+### Start Server
 ```bash
 cd backend
 npm run dev
-```
-
-The server will:
-1. Connect to PostgreSQL
-2. Run automatic migrations (create `users` table if not exists)
-3. Start on port 5000
-
-**Output:**
-```
-Users table ready
-Server running on port 5000
 ```
 
 ---
@@ -94,37 +94,15 @@ cd backend
 npm test
 ```
 
-**Test Coverage:**
-- Password Hashing (4 tests)
-  - Hash creates a hash
-  - Hash is different each time (salt)
-  - Compare returns true for correct password
-  - Compare returns false for wrong password
-
-- Auth Controller - Register (5 tests)
-  - Returns 400 if fields missing
-  - Returns 400 for invalid email
-  - Returns 400 for weak password
-  - Returns 400 if email exists
-  - Creates user successfully
-
-- Auth Controller - Login (4 tests)
-  - Returns 400 if fields missing
-  - Returns 401 for non-existent email
-  - Returns 401 for wrong password
-  - Logs in successfully
-
-- Auth Controller - AdminLogin (2 tests)
-  - Returns 401 for non-admin user
-  - Admin logs in successfully
-
-**Total: 15 unit tests**
+**26 unit tests** covering:
+- Password Hashing (bcrypt)
+- Auth Service (business logic)
+- Auth Controller (request/response)
 
 ---
 
 ## API Endpoints
 
-### Authentication
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | /api/auth/register | Register new user |
@@ -138,15 +116,31 @@ npm test
 ```
 backend/
 ├── src/
-│   ├── migrations/
-│   │   └── users.js       # Database migration
-│   ├── authController.js  # Auth logic
-│   ├── authRoutes.js      # API routes
-│   ├── db.js              # Database connection
-│   └── server.js          # Express server
+│   ├── controllers/
+│   │   └── authController.js   # Request/response handling
+│   ├── services/
+│   │   └── authService.js      # Business logic
+│   ├── routes/
+│   │   └── authRoutes.js       # API endpoints
+│   ├── sql/
+│   │   └── users.js            # SQL queries
+│   ├── db.js                   # Database connection
+│   └── server.js               # Express server
+├── migrations/
+│   └── createTables.js         # Database migrations
 ├── tests/
-│   └── auth.test.js       # Unit tests
-├── .env                   # Environment variables
-├── package.json
-└── README.md
+│   ├── bcrypt.test.js
+│   ├── authService.test.js
+│   └── authController.test.js
+├── .env
+└── package.json
 ```
+
+### Code Architecture
+
+| Layer | File | Responsibility |
+|-------|------|----------------|
+| Routes | `routes/authRoutes.js` | Define API endpoints |
+| Controller | `controllers/authController.js` | Handle request/response |
+| Service | `services/authService.js` | Business logic |
+| SQL | `sql/users.js` | Database queries |
