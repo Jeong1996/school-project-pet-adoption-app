@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
-const authRoutes = require('./authRoutes');
+const authRoutes = require('./routes/authRoutes');
 const { createUsersTable } = require('./migrations/users');
 
 const pool = new Pool({
