@@ -1,7 +1,7 @@
 # Frontend Authentication Implementation Plan
 
 ## Feature: User Authentication (Frontend)
-- **Developer**: Xinyi Gu
+- **Developer**: Yu Gyeom Jeong
 - **Scope**: Registration form, login form, user session management, input validation, responsive UI
 
 ---
