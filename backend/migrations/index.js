@@ -9,4 +9,6 @@ const createUsersTable = `
   );
 `;
 
-module.exports = { createUsersTable };
+module.exports = {
+  createUsersTable
+};
