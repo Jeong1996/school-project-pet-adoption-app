@@ -9,7 +9,6 @@
 ## Prerequisites
 - Node.js installed
 - PostgreSQL installed and running
-- Git repository initialized
 
 ---
 
@@ -20,36 +19,27 @@
 mkdir backend
 cd backend
 npm init -y
-npm install express cors dotenv pg bcryptjs jsonwebtoken jest supertest
-npm install --save-dev nodemon
+npm install express cors dotenv pg bcryptjs
+npm install --save-dev nodemon jest supertest
 ```
 
 ### 1.2 Project Structure
 ```
 backend/
 ├── src/
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   └── authController.js
-│   ├── middleware/
-│   │   └── auth.js
-│   ├── models/
-│   │   └── userModel.js
-│   ├── routes/
-│   │   └── authRoutes.js
-│   ├── utils/
-│   │   └── validation.js
-│   └── index.js
+│   ├── db.js              # Database connection
+│   ├── authController.js   # Auth logic
+│   ├── authRoutes.js      # Routes
+│   └── server.js          # Express server
 ├── tests/
 │   └── auth.test.js
 ├── .env
 └── package.json
 ```
 
-### 1.3 Create Express Server (`src/index.js`)
+### 1.3 Create Express Server (`src/server.js`)
 - Set up Express app
-- Add middleware: cors, json parser
+- Add cors and json parser
 - Add routes
 - Connect to database
 - Start server on port 5000
@@ -72,104 +62,170 @@ CREATE TABLE users (
   password_hash TEXT NOT NULL,
   name TEXT NOT NULL,
   role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin')),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
-
-### 2.3 Database Connection (`src/config/db.js`)
-- Use `pg` library to connect to PostgreSQL
-- Export pool connection
 
 ---
 
 ## Step 3: Backend Implementation
 
-### 3.1 User Model (`src/models/userModel.js`)
+### 3.1 Database Connection (`src/db.js`)
 ```javascript
-// Functions:
-- createUser(email, passwordHash, name, role)
-- findUserByEmail(email)
-- findUserById(id)
-- updateUser(id, updates)
-- deleteUser(id)
+const { Pool } = require('pg');
+const pool = new Pool({
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME
+});
+module.exports = pool;
 ```
 
-### 3.2 Validation Utils (`src/utils/validation.js`)
-```javascript
-// Functions:
-- validateEmail(email)        // Returns boolean
-- validatePassword(password)  // Returns { valid: boolean, errors: string[] }
-- validateName(name)         // Returns boolean
-- hashPassword(password)      // Returns hash
-- comparePassword(password, hash)  // Returns boolean
-```
+### 3.2 Auth Controller (`src/authController.js`)
 
-### 3.3 Auth Controller (`src/controllers/authController.js`)
 ```javascript
+const bcrypt = require('bcryptjs');
+const pool = require('./db');
+
 // POST /api/auth/register
-- Validate input (email, password, name)
-- Check if email already exists
-- Hash password
-- Create user
-- Return token + user data
+async function register(req, res) {
+  const { email, password, name } = req.body;
+  
+  // Validate input
+  if (!email || !password || !name) {
+    return res.status(400).json({ error: 'All fields required' });
+  }
+  
+  // Check email format
+  if (!email.includes('@')) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+  
+  // Check password strength (min 8 chars)
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters' });
+  }
+  
+  try {
+    // Check if email exists
+    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    if (existing.rows.length > 0) {
+      return res.status(400).json({ error: 'Email already registered' });
+    }
+    
+    // Hash password
+    const passwordHash = await bcrypt.hash(password, 10);
+    
+    // Create user
+    const result = await pool.query(
+      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, role',
+      [email, passwordHash, name]
+    );
+    
+    res.status(201).json({ user: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+}
 
 // POST /api/auth/login
-- Validate input
-- Find user by email
-- Compare password
-- Generate JWT token
-- Return token + user data
+async function login(req, res) {
+  const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password required' });
+  }
+  
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const user = result.rows[0];
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    // Return user without password hash
+    const { password_hash, ...userWithoutPassword } = user;
+    res.json({ user: userWithoutPassword });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+}
 
-// GET /api/auth/profile
-- Get user from request (middleware)
-- Return user data (excluding password)
+// POST /api/auth/admin/login
+async function adminLogin(req, res) {
+  const { email, password } = req.body;
+  
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE email = $1 AND role = $2', [email, 'admin']);
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid admin credentials' });
+    }
+    
+    const user = result.rows[0];
+    const validPassword = await bcrypt.compare(password, user.password_hash);
+    
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid admin credentials' });
+    }
+    
+    const { password_hash, ...userWithoutPassword } = user;
+    res.json({ user: userWithoutPassword });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+module.exports = { register, login, adminLogin };
 ```
 
-### 3.4 Auth Middleware (`src/middleware/auth.js`)
+### 3.3 Auth Routes (`src/authRoutes.js`)
 ```javascript
-// verifyToken middleware
-- Get token from header
-- Verify JWT token
-- Attach user to request
-- Call next()
-```
+const express = require('express');
+const router = express.Router();
+const { register, login, adminLogin } = require('./authController');
 
-### 3.5 Auth Routes (`src/routes/authRoutes.js`)
-```
-POST   /api/auth/register   - User registration
-POST   /api/auth/login     - User login
-GET    /api/auth/profile   - Get user profile (protected)
-POST   /api/auth/admin/login - Admin login
+router.post('/register', register);
+router.post('/login', login);
+router.post('/admin/login', adminLogin);
+
+module.exports = router;
 ```
 
 ---
 
 ## Step 4: Backend Unit Tests
 
-### 4.1 Auth Tests (`tests/auth.test.js`)
+### tests/auth.test.js
+```javascript
+const bcrypt = require('bcryptjs');
 
-#### Authentication Tests
-- Valid registration with email and password
-- Registration with duplicate email (should fail)
-- Registration with invalid email format
-- Registration with weak password (too short)
-- Registration with missing name
+describe('Auth Controller', () => {
+  // Test valid registration
+  // Test duplicate email
+  // Test invalid email format
+  // Test weak password
+  // Test valid login
+  // Test invalid password
+  // Test non-existent email
+  // Test admin login
+});
 
-- Valid login with correct credentials
-- Login with incorrect password
-- Login with non-existent email
+describe('Password Hashing', () => {
+  // Test hash is created
+  // Test hash is different each time
+  // Test comparePassword works
+});
+```
 
-#### Password Hashing Tests
-- Password is hashed correctly
-- Hash is different each time (salt)
-- comparePassword returns true for correct password
-- comparePassword returns false for wrong password
-
-#### Profile Tests
-- Get profile with valid token
-- Get profile without token (401)
-- Get profile with invalid token (401)
+Run tests: `npm test`
 
 ---
 
@@ -180,29 +236,15 @@ POST   /api/auth/admin/login - Admin login
 npx create-react-app frontend
 cd frontend
 npm install axios react-router-dom
-npm install --save-dev @testing-library/react @testing-library/jest-dom
 ```
 
 ### 5.2 Project Structure
 ```
 frontend/
 ├── src/
-│   ├── components/
-│   │   ├── Navbar.js
-│   │   ├── PrivateRoute.js
-│   │   └── AuthForm.js
-│   ├── context/
-│   │   └── AuthContext.js
 │   ├── pages/
 │   │   ├── Login.js
-│   │   ├── Register.js
-│   │   └── Profile.js
-│   ├── services/
-│   │   └── api.js
-│   ├── tests/
-│   │   ├── Login.test.js
-│   │   ├── Register.test.js
-│   │   └── Profile.test.js
+│   │   └── Register.js
 │   ├── App.js
 │   └── index.js
 └── package.json
@@ -212,124 +254,60 @@ frontend/
 
 ## Step 6: Frontend Implementation
 
-### 6.1 API Service (`src/services/api.js`)
+### 6.1 API Service (`src/api.js`)
 ```javascript
-// Axios instance with baseURL
-// Interceptors for adding token to requests
-// Functions:
-- register(email, password, name)
-- login(email, password)
-- getProfile()
-- updateProfile(data)
+import axios from 'axios';
+
+const API_URL = 'http://localhost:5000/api/auth';
+
+export const register = (email, password, name) => 
+  axios.post(`${API_URL}/register`, { email, password, name });
+
+export const login = (email, password) => 
+  axios.post(`${API_URL}/login`, { email, password });
+
+export const adminLogin = (email, password) => 
+  axios.post(`${API_URL}/admin/login`, { email, password });
 ```
 
-### 6.2 Auth Context (`src/context/AuthContext.js`)
-```javascript
-// State: user, token, loading
-// Functions:
-- login(email, password)
-- register(email, password, name)
-- logout()
-- updateUser(data)
-```
-
-### 6.3 Register Page (`src/pages/Register.js`)
-- Form fields: name, email, password, confirm password
-- Validation:
-  - Name required (min 2 characters)
-  - Email format validation
-  - Password min 8 characters
-  - Passwords match
-- Submit to register API
+### 6.2 Register Page (`src/pages/Register.js`)
+- Form: name, email, password, confirm password
+- Validate: name required, valid email, password min 8 chars, passwords match
+- Call register API
 - Redirect to login on success
-- Show error messages
 
-### 6.4 Login Page (`src/pages/Login.js`)
-- Form fields: email, password
-- Validation:
-  - Email required
-  - Password required
-- Submit to login API
-- Store token in localStorage
+### 6.3 Login Page (`src/pages/Login.js`)
+- Form: email, password
+- Validate: fields required
+- Call login API
+- Store user in localStorage
 - Redirect to home on success
-- Show error messages
-
-### 6.5 Profile Page (`src/pages/Profile.js`)
-- Display user information (name, email)
-- Edit profile form
-- Update profile functionality
-
-### 6.6 Navbar Component (`src/components/Navbar.js`)
-- Show Login/Register when not logged in
-- Show Profile/Logout when logged in
-
-### 6.7 Private Route (`src/components/PrivateRoute.js`)
-- Redirect to login if not authenticated
-- Render children if authenticated
 
 ---
 
 ## Step 7: Frontend Unit Tests
 
-### 7.1 Register Tests
-- Render register form
-- Show validation errors for empty fields
-- Show error for invalid email
-- Show error for weak password
-- Show error for password mismatch
-- Submit with valid data
-- Handle registration error (duplicate email)
-- Navigate to login on success
-
-### 7.2 Login Tests
-- Render login form
-- Show validation errors for empty fields
-- Submit with valid credentials
-- Handle login error (invalid credentials)
-- Store token in localStorage
-- Navigate to home on success
-
-### 7.3 Profile Tests
-- Show loading while fetching
-- Display user information
-- Handle unauthorized access (redirect to login)
+Run tests: `npm test`
 
 ---
 
-## Implementation Order
+## How to Run
 
-### Day 1: Backend Setup
-- [ ] Initialize backend project
-- [ ] Set up Express server
-- [ ] Connect to PostgreSQL
+### Backend
+```bash
+cd backend
+cp .env.example .env
+# Edit .env with your PostgreSQL credentials
+npm run dev
+# Server runs on http://localhost:5000
+```
 
-### Day 2: Database & Models
-- [ ] Create users table
-- [ ] Implement user model
-- [ ] Create validation utilities
-
-### Day 3: Backend Controllers & Routes
-- [ ] Implement auth controller
-- [ ] Create routes
-- [ ] Add JWT middleware
-
-### Day 4: Backend Tests
-- [ ] Write authentication tests
-- [ ] Write password hashing tests
-- [ ] Run all tests
-
-### Day 5: Frontend Setup
-- [ ] Initialize React project
-- [ ] Set up routing
-
-### Day 6-7: Frontend Implementation
-- [ ] Create API service
-- [ ] Implement AuthContext
-- [ ] Build Register/Login/Profile pages
-
-### Day 8: Frontend Tests
-- [ ] Write component tests
-- [ ] Run all tests
+### Frontend
+```bash
+cd frontend
+npm start
+# App runs on http://localhost:3000
+```
 
 ---
 
@@ -343,10 +321,4 @@ DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=pet_adoption
-JWT_SECRET=your_jwt_secret_key
-```
-
-### Frontend (.env)
-```
-REACT_APP_API_URL=http://localhost:5000/api
 ```
