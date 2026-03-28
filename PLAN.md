@@ -77,6 +77,7 @@
 POST   /api/auth/register   - User registration
 POST   /api/auth/login      - User login
 GET    /api/auth/profile    - Get user profile
+POST   /api/auth/admin/login - Admin login
 ```
 
 ### Pets
@@ -87,9 +88,11 @@ GET    /api/pets/:id         - Get pet details
 
 ### Applications
 ```
-POST   /api/applications     - Submit adoption application
-GET    /api/applications     - Get all applications (admin)
-PUT    /api/applications/:id - Update application status
+POST   /api/applications              - Submit adoption application (user)
+GET    /api/applications              - Get all applications (admin)
+GET    /api/applications/:id          - Get application details (admin)
+PUT    /api/applications/:id/approve - Approve application (admin)
+PUT    /api/applications/:id/deny     - Deny application (admin)
 ```
 
 ### Listings
@@ -187,11 +190,35 @@ CREATE TABLE applications (
 - Available list management
 
 ### Adoption Application Tests (Yu Gyeom Jeong)
-- Complete valid application
-- Incomplete form submission
-- Invalid field entries
-- Application approval workflow
-- Application rejection workflow
+- Complete valid application (all fields valid)
+- Incomplete form submission (missing required fields)
+- Invalid email format
+- Invalid phone format
+- Invalid zip code format
+- Missing address information
+- Employment status validation
+- Landlord contact validation
+- Veterinarian reference validation
+- Current pets count mismatch
+- Hours alone per day too high for pet requirements
+- No fenced yard when required
+- Experience level insufficient for pet
+- Application approval workflow (admin)
+- Application rejection workflow (admin)
+
+### Admin Tests (Yu Gyeom Jeong)
+- Admin login with valid credentials
+- Admin login with invalid credentials
+- Non-admin user cannot access admin endpoints
+- Admin can view all pending applications
+- Admin can view all approved applications
+- Admin can view all denied applications
+- Admin can approve application
+- Admin can deny application with reason
+- Admin cannot approve already approved application
+- Admin cannot deny already denied application
+- User cannot approve/deny applications (unauthorized)
+- Application status updates reflected in pet listing
 
 ---
 
@@ -200,7 +227,8 @@ CREATE TABLE applications (
 2. Login
 3. Pet search with filters
 4. Application submission
-5. Error handling for invalid input
+5. Admin review and approval/denial
+6. Error handling for invalid input
 
 ---
 
