@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const pool = require('./db');
+const { usersQueries } = require('./sql/users');
 
 async function register(req, res) {
   const { email, password, name } = req.body;
@@ -17,17 +18,14 @@ async function register(req, res) {
   }
   
   try {
-    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    const existing = await pool.query(usersQueries.findByEmail, [email]);
     if (existing.rows.length > 0) {
       return res.status(400).json({ error: 'Email already registered' });
     }
     
     const passwordHash = await bcrypt.hash(password, 10);
     
-    const result = await pool.query(
-      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, role',
-      [email, passwordHash, name]
-    );
+    const result = await pool.query(usersQueries.create, [email, passwordHash, name]);
     
     res.status(201).json({ user: result.rows[0] });
   } catch (err) {
@@ -44,7 +42,7 @@ async function login(req, res) {
   }
   
   try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const result = await pool.query(usersQueries.findByEmail, [email]);
     if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -68,7 +66,7 @@ async function adminLogin(req, res) {
   const { email, password } = req.body;
   
   try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1 AND role = $2', [email, 'admin']);
+    const result = await pool.query(usersQueries.findAdminByEmail, [email, 'admin']);
     if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid admin credentials' });
     }
