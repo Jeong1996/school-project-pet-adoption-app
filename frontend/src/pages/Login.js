@@ -78,7 +78,7 @@ function Login() {
               <button type="submit" className="btn-primary">Log in</button>
             </form>
             <p className="auth-switch">
-              Don't have an account? <Link to="/register" className="auth-link">Sign up</Link>
+              <Link to="/register" className="auth-link">Sign up</Link>
             </p>
           </div>
         </div>
