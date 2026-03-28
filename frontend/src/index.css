@@ -1,12 +1,15 @@
-/* Instagram-inspired design tokens */
+/* Nature-inspired design tokens */
 :root {
-  --insta-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  --insta-blue: #0095f6;
-  --insta-dark: #262626;
-  --insta-gray: #dbdbdb;
-  --insta-light-gray: #fafafa;
-  --insta-white: #ffffff;
-  --insta-error: #ed4956;
+  --nature-gradient: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 50%, #8fbc8f 100%);
+  --nature-green: #4a7c59;
+  --nature-green-light: #6b9b7a;
+  --nature-dark: #2d4a3e;
+  --nature-cream: #f8f6f0;
+  --nature-cream-light: #fdfcfa;
+  --nature-white: #ffffff;
+  --nature-earth: #8b7355;
+  --nature-error: #c0392b;
+  --nature-border: #d4cfc4;
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -18,16 +21,17 @@
 
 body {
   font-family: var(--font-family);
-  background: var(--insta-light-gray);
-  color: var(--insta-dark);
+  background: var(--nature-cream);
+  color: var(--nature-dark);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Navbar - Instagram style */
+/* Navbar - Nature style */
 .navbar {
-  background: var(--insta-white);
-  border-bottom: 1px solid var(--insta-gray);
+  background: var(--nature-cream-light);
+  border-bottom: 1px solid var(--nature-border);
+  box-shadow: 0 2px 8px rgba(45, 74, 62, 0.08);
   position: fixed;
   top: 0;
   left: 0;
@@ -51,7 +55,7 @@ body {
 .nav-logo {
   font-family: 'Billabong', cursive;
   font-size: 28px;
-  color: var(--insta-dark);
+  color: var(--nature-dark);
   text-decoration: none;
   font-weight: bold;
 }
@@ -63,18 +67,18 @@ body {
 }
 
 .nav-links a {
-  color: var(--insta-dark);
+  color: var(--nature-dark);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
 }
 
 .nav-links a:hover {
-  color: #8e8e8e;
+  color: var(--nature-green);
 }
 
 .nav-btn-primary {
-  background: var(--insta-blue);
+  background: var(--nature-green);
   color: white !important;
   padding: 6px 16px;
   border-radius: 4px;
@@ -88,7 +92,7 @@ body {
 
 .welcome-text {
   font-size: 14px;
-  color: #8e8e8e;
+  color: var(--nature-earth);
 }
 
 /* Main Container */
@@ -138,16 +142,16 @@ body {
 
 .hero p {
   font-size: 17px;
-  color: #8e8e8e;
+  color: var(--nature-earth);
   text-align: center;
   margin-bottom: 32px;
 }
 
-/* Auth Form - Instagram Card Style */
+/* Auth Form - Nature Card Style */
 .auth-form {
-  background: var(--insta-white);
-  border: 1px solid var(--insta-gray);
-  border-radius: 8px;
+  background: var(--nature-cream-light);
+  border: 1px solid var(--nature-border);
+  border-radius: 12px;
   padding: 40px 40px 24px;
   width: 100%;
   max-width: 350px;
@@ -164,7 +168,7 @@ body {
 
 .auth-form > p {
   text-align: center;
-  color: #8e8e8e;
+  color: var(--nature-earth);
   margin-bottom: 24px;
   font-size: 14px;
 }
@@ -183,19 +187,19 @@ body {
   width: 100%;
   padding: 10px 8px;
   font-size: 12px;
-  border: 1px solid var(--insta-gray);
+  border: 1px solid var(--nature-gray);
   border-radius: 4px;
-  background: var(--insta-light-gray);
+  background: var(--nature-light-gray);
   transition: all 0.2s;
   outline: none;
 }
 
 .auth-form input:focus {
-  border-color: #a8a8a8;
+  border-color: var(--nature-green-light);
 }
 
 .auth-form input::placeholder {
-  color: #a8a8a8;
+  color: var(--nature-earth);
 }
 
 /* Buttons */
@@ -205,7 +209,7 @@ body {
   font-size: 14px;
   font-weight: 600;
   color: white;
-  background: var(--insta-blue);
+  background: var(--nature-blue);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -224,20 +228,20 @@ body {
 
 /* Links */
 .auth-link {
-  color: var(--insta-blue);
+  color: var(--nature-blue);
   text-decoration: none;
   font-size: 12px;
   font-weight: 600;
 }
 
 .auth-link:hover {
-  color: #00376b;
+  color: var(--nature-green);
 }
 
 .auth-switch {
   text-align: center;
   margin-top: 20px;
-  color: var(--insta-dark);
+  color: var(--nature-dark);
   font-size: 14px;
 }
 
@@ -253,19 +257,19 @@ body {
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--insta-gray);
+  background: var(--nature-gray);
 }
 
 .divider span {
   padding: 0 16px;
-  color: #8e8e8e;
+  color: var(--nature-earth);
   font-size: 13px;
   font-weight: 600;
 }
 
 /* Error Messages */
 .error-message {
-  color: var(--insta-error);
+  color: var(--nature-error);
   font-size: 12px;
   margin-top: 4px;
   display: block;
@@ -273,8 +277,8 @@ body {
 
 .form-error {
   background: #fff5f5;
-  border: 1px solid var(--insta-error);
-  color: var(--insta-error);
+  border: 1px solid var(--nature-error);
+  color: var(--nature-error);
   padding: 10px;
   border-radius: 4px;
   font-size: 14px;
@@ -302,7 +306,7 @@ body {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: var(--insta-gradient);
+  background: var(--nature-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -347,7 +351,7 @@ body {
   text-align: center;
   padding: 40px 20px;
   margin-top: 40px;
-  border-top: 1px solid var(--insta-gray);
+  border-top: 1px solid var(--nature-gray);
 }
 
 .features-section h3 {
@@ -364,14 +368,14 @@ body {
 }
 
 .feature-item {
-  color: #0095f6;
-  font-size: 12px;
+  color: var(--nature-green);
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .feature-item:hover {
-  color: #00376b;
+  color: var(--nature-green-light);
 }
 
 /* Loading */
@@ -381,7 +385,7 @@ body {
   align-items: center;
   height: 100vh;
   font-size: 14px;
-  color: #8e8e8e;
+  color: var(--nature-earth);
 }
 
 /* Responsive */
