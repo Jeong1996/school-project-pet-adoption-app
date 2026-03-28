@@ -1,3 +1,4 @@
+// Author: Yu Gyeom Jeong
 const authService = require('../services/authService');
 
 async function register(req, res) {
