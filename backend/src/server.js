@@ -5,6 +5,8 @@ const cors = require('cors');
 const { Pool } = require('pg');
 const authRoutes = require('./routes/authRoutes');
 const { createUsersTable } = require('../migrations/createTables');
+const { handleSearchPets } = require("./controllers/petController");
+//const petRoutes = require("./routes/petRoutes");
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -32,6 +34,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+console.log("petRoutes type:", typeof petRoutes);
+//app.use("/api/pets", petRoutes);
+app.get("/api/pets/search", handleSearchPets);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Pet Adoption API' });
