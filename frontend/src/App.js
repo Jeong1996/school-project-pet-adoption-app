@@ -7,6 +7,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
+import ApplicationForm from './pages/ApplicationForm';
+import ApplicationSuccess from './pages/ApplicationSuccess';
+import Applications from './pages/Applications';
 
 function App() {
   return (
@@ -30,6 +33,30 @@ function App() {
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/apply/:petId" 
+            element={
+              <PrivateRoute>
+                <ApplicationForm />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/application-success" 
+            element={
+              <PrivateRoute>
+                <ApplicationSuccess />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/applications" 
+            element={
+              <PrivateRoute>
+                <Applications />
               </PrivateRoute>
             } 
           />

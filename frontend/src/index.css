@@ -506,6 +506,122 @@ body {
   color: var(--nature-earth);
 }
 
+/* Textarea */
+.auth-form textarea {
+  width: 100%;
+  padding: 10px 8px;
+  font-size: 12px;
+  border: 1px solid var(--nature-gray);
+  border-radius: 4px;
+  background: var(--nature-light-gray);
+  transition: all 0.2s;
+  outline: none;
+  font-family: var(--font-family);
+  resize: vertical;
+}
+
+.auth-form textarea:focus {
+  border-color: var(--nature-green-light);
+}
+
+.auth-form textarea::placeholder {
+  color: var(--nature-earth);
+}
+
+.auth-form label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--nature-dark);
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+
+/* Applications List */
+.applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.application-card {
+  background: var(--nature-cream-light);
+  border: 1px solid var(--nature-border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.application-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.application-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--nature-dark);
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-approved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-rejected {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.application-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.application-details p {
+  font-size: 14px;
+  color: var(--nature-dark);
+}
+
+.application-details strong {
+  font-weight: 600;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--nature-earth);
+}
+
+.empty-state p {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+/* Success Icon */
+.success-icon {
+  font-size: 48px;
+  margin: 24px 0;
+  color: var(--nature-green);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .navbar-content {

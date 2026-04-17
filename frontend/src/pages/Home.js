@@ -1,7 +1,19 @@
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleBrowsePets = () => {
+    // For now, navigate directly to apply for pet id 1
+    // In a full implementation, this would show a pet list
+    navigate('/apply/1');
+  };
+
+  const handleViewApplications = () => {
+    navigate('/applications');
+  };
 
   return (
     <div className="main-container">
@@ -15,21 +27,21 @@ function Home() {
             <div className="card-icon">🐕</div>
             <h3>View Animals</h3>
             <p>Browse available pets looking for their forever home</p>
-            <button className="btn-primary">Browse Pets</button>
+            <button className="btn-primary" onClick={handleBrowsePets}>Browse Pets</button>
           </div>
 
           <div className="dashboard-card">
             <div className="card-icon">📋</div>
             <h3>My Applications</h3>
             <p>Track the status of your adoption applications</p>
-            <button className="btn-primary">View Applications</button>
+            <button className="btn-primary" onClick={handleViewApplications}>View Applications</button>
           </div>
 
           <div className="dashboard-card">
             <div className="card-icon">🏠</div>
             <h3>My Profile</h3>
             <p>Update your account information and preferences</p>
-            <button className="btn-primary" onClick={() => window.location.href = '/profile'}>Edit Profile</button>
+            <button className="btn-primary" onClick={() => navigate('/profile')}>Edit Profile</button>
           </div>
         </div>
 

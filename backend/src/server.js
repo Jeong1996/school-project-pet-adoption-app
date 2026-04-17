@@ -4,7 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const authRoutes = require('./routes/authRoutes');
-const { createUsersTable } = require('../migrations/createTables');
+const applicationRoutes = require('./routes/applicationRoutes');
+const { createUsersTable, createPetsTable, createApplicationsTable } = require('../migrations/createTables');
 const { handleSearchPets } = require("./controllers/petController");
 //const petRoutes = require("./routes/petRoutes");
 
@@ -21,6 +22,10 @@ async function migrate() {
   try {
     await client.query(createUsersTable);
     console.log('Users table ready');
+    await client.query(createPetsTable);
+    console.log('Pets table ready');
+    await client.query(createApplicationsTable);
+    console.log('Applications table ready');
   } catch (err) {
     console.error('Migration error:', err.message);
   } finally {
@@ -34,6 +39,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/applications', applicationRoutes);
 console.log("petRoutes type:", typeof petRoutes);
 //app.use("/api/pets", petRoutes);
 app.get("/api/pets/search", handleSearchPets);
