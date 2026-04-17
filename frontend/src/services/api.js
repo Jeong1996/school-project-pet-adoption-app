@@ -15,4 +15,10 @@ export const login = (email, password) =>
 export const adminLogin = (email, password) => 
   api.post('/auth/admin/login', { email, password });
 
+export const submitApplication = (petId, data) => 
+  api.post(`/applications/${petId}`, data);
+
+export const getUserApplications = (userId) => 
+  api.get(`/applications/user/${userId}`);
+
 export default api;
