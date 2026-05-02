@@ -7,22 +7,42 @@ A full-stack web application connecting animal shelters and rescues with potenti
 ## Software Versions
 
 ### Development Software
+
+#### Backend
+| Software | Version |
+|----------|---------|
+| Node.js | 25.x |
+| npm | 10.x |
+| Express.js | 5.x |
+| PostgreSQL | 15.x |
+| bcryptjs | 3.x |
+| jsonwebtoken | 9.x |
+
+#### Frontend
 | Software | Version |
 |----------|---------|
 | Node.js | 25.x |
 | npm | 10.x |
 | React | 19.x |
-| Express.js | 5.x |
-| PostgreSQL | 16.x |
-| bcryptjs | 3.x |
-| jsonwebtoken | 9.x |
+| React Router | 6.x |
+| Axios | 1.x |
+
+---
 
 ### Testing Software
+
+#### Backend
 | Software | Version |
 |----------|---------|
 | Jest | 30.x |
-| React Testing Library | 16.x |
 | supertest | 7.x |
+
+#### Frontend
+| Software | Version |
+|----------|---------|
+| React Testing Library | 16.x |
+| @testing-library/jest-dom | 6.x |
+| @testing-library/user-event | 13.x |
 
 ---
 
@@ -84,14 +104,27 @@ Open http://localhost:3000 in your browser.
 ## Run Tests
 
 ```bash
-# Backend tests (153 tests)
+# Backend tests
 cd backend
 npm test
 
-# Frontend tests (25 tests)
+# Frontend tests
 cd frontend
 npm test
 ```
+
+---
+
+## Test Results
+
+### Backend Tests
+- **Total:** 153 tests
+- **Passed:** 153 ✅
+- **Failed:** 0
+
+### Frontend Tests
+- **Total:** 25 tests
+- **Passed:** 25 ✅
 
 ---
 
