@@ -52,3 +52,10 @@ Yu Gyeom Jeong and Xinyi Gu
 **Control Flow:** Authorization branches
 **Data Flow:** Token → jwt.verify → req.user
 **Triangle:** Token format boundaries
+
+#### Why This Methodology:
+Control Flow Testing was applied to verify all authorization branches work correctly. The middleware must reject requests without tokens, reject requests with invalid tokens, accept valid tokens and attach user data to the request, and handle edge cases like empty Bearer tokens. Each branch represents a different security path through the code.
+
+Data Flow Testing was necessary because the token must flow from the Authorization header through JWT verification and finally be stored in req.user for downstream middleware and controllers to access. This data flow ensures authenticated user information is available throughout the request processing pipeline.
+
+Triangle Testing was used to verify edge cases in token handling including very long tokens, tokens with special characters, and multiple space-separated tokens after "Bearer". These boundary conditions ensure robust handling of various token formats users might send.

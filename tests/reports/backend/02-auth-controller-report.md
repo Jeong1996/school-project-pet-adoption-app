@@ -82,20 +82,10 @@ Yu Gyeom Jeong and Xinyi Gu
 
 ### Methodology Used: Control Flow Testing + Data Flow Testing
 
-#### Why Control Flow Testing:
-The auth controller manages multiple HTTP response paths based on different conditions:
-- **Validation error path** → 400 Bad Request
-- **Service error path** → 400/401/500 errors
-- **Success path** → 201 Created / 200 OK
+#### Why This Methodology:
+Control Flow Testing was selected for the auth controller because it manages multiple HTTP response paths based on different conditions that must each be verified. The controller must handle validation errors returning 400 Bad Request, service errors returning appropriate 400 or 401 status codes, and successful operations returning 201 Created or 200 OK. Each of these branches represents a different flow through the code that must work correctly for the API to function properly. By testing each branch explicitly, we ensure that the controller correctly maps all possible scenarios to their expected HTTP responses.
 
-Each branch was tested to ensure correct HTTP status codes and response bodies.
-
-#### Why Data Flow Testing:
-The controller acts as a data pipeline between HTTP requests and services:
-1. **Request body** → Extract and validate input
-2. **Input validation** → Call service method
-3. **Service response** → Transform and send HTTP response
-4. **Error handling** → Convert exceptions to appropriate HTTP responses
+Data Flow Testing was applied because the controller acts as a data pipeline between HTTP requests and backend services. The data flows from the request body being extracted and validated, then passed to service methods for processing, and finally transformed into HTTP responses. This data transformation pipeline must handle both successful results and various error conditions. Testing the data flow ensures that fields like email, password, name, and role are correctly passed from the request through to the service layer and then transformed appropriately in the response.
 
 #### Test Coverage:
 

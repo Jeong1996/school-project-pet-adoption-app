@@ -145,25 +145,12 @@ Yu Gyeom Jeong and Xinyi Gu
 
 ### Methodology Used: Control Flow Testing + Data Flow Testing + Triangle Testing
 
-#### Why Control Flow Testing:
-Pet service has multiple CRUD operations with various branching:
-- **Search branch:** No filters vs single filter vs multiple filters
-- **Update branch:** Single field vs multiple fields vs no fields
-- **Delete branch:** Success vs not found
+#### Why This Methodology:
+Control Flow Testing was chosen for the pet service because it performs multiple CRUD operations with various branching paths that must all function correctly. The search operation branches based on whether filters are provided or absent, leading to different query constructions. The update operation branches based on whether single fields, multiple fields, or no fields are being updated. The delete operation must handle both successful archival and the case where the pet doesn't exist. Testing each branch ensures all code paths are exercised.
 
-#### Why Triangle Testing:
-Search filters have equivalence classes:
-1. **Species:** Valid species vs invalid species names
-2. **Breed:** Exact match vs partial match (ILIKE)
-3. **Age:** Valid number vs string vs negative
-4. **Location:** Exact match vs case-insensitive match
+Triangle Testing was applied because search filters have specific equivalence classes that must be handled correctly. Species and breed filters use case-insensitive matching (ILIKE) so "dog", "Dog", and "DOG" should all return the same results. Age filtering uses exact numeric matching which requires the input to be converted from string to number. Location filtering also uses case-insensitive partial matching. By identifying these equivalence classes and testing representative values from each, we ensure consistent behavior across all possible inputs.
 
-#### Why Data Flow Testing:
-Filter data flows through query building:
-1. **Input filters** → Clean/trim values
-2. **Clean filters** → Build SQL WHERE clause
-3. **SQL query** → Execute with parameterized values
-4. **Result** → Return as array
+Data Flow Testing was necessary because filter data flows through a multi-stage query building process. Input filters are first cleaned and trimmed to remove whitespace, then used to construct SQL WHERE clauses dynamically, with each non-empty filter adding a condition to the query. The parameterized values are then passed to the database, and the results are returned as an array. This data flow must be tested to ensure filters are correctly transformed at each stage.
 
 #### Test Coverage by Category:
 

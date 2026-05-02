@@ -42,3 +42,8 @@ Yu Gyeom Jeong and Xinyi Gu
 ## 6. Methodology
 **Control Flow:** State transitions (login, logout, loading)
 **Data Flow:** User data → localStorage → state
+
+#### Why This Methodology:
+Control Flow Testing was applied to verify all state transitions work correctly in the authentication context. When a user logs in, the state must transition from loading to authenticated with user data. When logging out, the state must transition from authenticated back to null. The initial loading state must be true until authentication is complete. Testing these state transitions ensures the application correctly manages user authentication state throughout the user session.
+
+Data Flow Testing was necessary because user data flows from multiple sources through the authentication system. When login is called, user data from the API response flows into state and is also persisted to localStorage for session persistence. On app startup, the context reads from localStorage to restore the user's session. This data flow ensures users stay logged in across page refreshes and browser sessions.

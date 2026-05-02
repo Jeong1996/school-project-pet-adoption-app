@@ -28,7 +28,9 @@ Yu Gyeom Jeong and Xinyi Gu
 
 ## 6. Test Methodology
 
-### Control Flow Testing + Triangle Testing
-- Tests all HTTP response codes (200, 201, 400, 404, 500)
-- Input validation for required fields (name, species)
-- Error handling for service failures
+### Methodology Used: Control Flow Testing + Triangle Testing
+
+#### Why This Methodology:
+Control Flow Testing was applied because the pet controller handles multiple HTTP response paths that must all work correctly. The controller must return appropriate status codes for successful operations such as retrieving pets with 200, creating new pets with 201, client errors like validation failures with 400, not found errors with 404, and server errors with 500. Testing each response path ensures the API correctly communicates the outcome of each request to frontend clients, enabling proper user feedback and error handling in the UI.
+
+Triangle Testing was used for input validation because the controller validates required fields before processing requests. The name and species fields are required and must be present in the request body for pet creation to succeed. By testing both valid inputs where both fields are present and invalid inputs where either name, species, or both are missing, we ensure the validation logic correctly rejects improper requests and accepts valid ones. This approach covers the equivalence classes of missing field combinations.

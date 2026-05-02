@@ -47,3 +47,8 @@ Yu Gyeom Jeong and Xinyi Gu
 ## 6. Methodology
 **Control Flow:** Form rendering, input, validation, submission
 **Triangle:** Input validation equivalence classes
+
+#### Why This Methodology:
+Control Flow Testing was applied to verify the registration component handles all user interactions from rendering through submission. The component must display input fields for name, email, and password, update state as users type in each field, validate the input before submission, and call the registration function with valid data. Each stage of the user interaction represents a different path through the component code that must be tested.
+
+Triangle Testing was used because registration requires validation of multiple fields with different requirements. The name field must be non-empty, the email field must contain a valid email format, and the password field must meet minimum length requirements. By testing valid inputs that meet all requirements and invalid inputs that violate various rules, we ensure the form correctly accepts proper registrations and rejects invalid ones.

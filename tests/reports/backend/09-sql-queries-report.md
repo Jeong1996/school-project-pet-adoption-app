@@ -41,3 +41,8 @@ Yu Gyeom Jeong and Xinyi Gu
 ## 6. Test Methodology
 **Triangle Testing:** Query structure equivalence classes
 **Data Flow Testing:** Field reference validation
+
+#### Why This Methodology:
+Triangle Testing was applied to validate the structure of SQL queries and ensure they conform to expected patterns. Each query type (SELECT, INSERT) represents an equivalence class that must be tested for correct syntax. Parameter count verification ensures queries have the correct number of placeholders matching the number of values being inserted or compared. Query length validation ensures queries are substantial enough to be meaningful.
+
+Data Flow Testing was necessary because field references in queries must correctly map to database columns. The users table queries reference email, password_hash, and name fields. The applications queries must correctly JOIN with the pets table and include fields like pet_name, species, and breed. Testing these field references ensures the queries will execute correctly against the database schema.

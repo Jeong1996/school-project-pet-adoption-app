@@ -42,3 +42,8 @@ Yu Gyeom Jeong and Xinyi Gu
 ## 6. Methodology
 **Control Flow:** Component rendering based on auth state
 **Data Flow:** User data flows to display elements
+
+#### Why This Methodology:
+Control Flow Testing was applied to verify the home component renders differently based on the authentication state. When a user is logged in, the component should display a welcome message, navigation links, and a logout button. When no user is logged in, the component may show different content or redirect. Testing these conditional rendering paths ensures the component correctly adapts the UI based on whether the user is authenticated.
+
+Data Flow Testing was necessary because user data flows from the authentication context into the component's display elements. The user's name is displayed in the welcome message, and the logout function must be available to allow users to sign out. This data flow ensures user information is correctly displayed and actions are properly connected to authentication functions.

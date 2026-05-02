@@ -40,4 +40,9 @@ Yu Gyeom Jeong and Xinyi Gu
 ## 6. Test Methodology
 **Control Flow Testing:** Hash function and compare function branches
 **Data Flow Testing:** Password flows through hashing algorithm
+
+#### Why This Methodology:
+Control Flow Testing was applied to verify both the hash function and compare function work correctly. The hash function must take a plaintext password and salt, then produce a hashed output. The compare function must correctly return true when given the original password and the correct hash, and return false when given an incorrect password. Testing both branches ensures password security functionality works as expected.
+
+Data Flow Testing was necessary because the password flows through multiple transformations in the hashing process. The input password passes through salt generation where a random salt is created, then through the bcrypt hashing algorithm where the password and salt are combined and hashed, and finally the result is returned for storage or comparison. This data flow must work correctly to ensure passwords are stored securely.
 - Input password → Salt generation → Hash computation → Compare logic

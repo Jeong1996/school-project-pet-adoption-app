@@ -130,26 +130,12 @@ Yu Gyeom Jeong and Xinyi Gu
 
 ### Methodology Used: Control Flow Testing + Triangle Testing + Data Flow Testing
 
-#### Why Control Flow Testing:
-Application processing has complex decision trees:
-- **Submission path:** Validate → Check pet → Check user → Create application
-- **Approval path:** Find application → Update status → Update pet status
-- **Decision path:** Get application → Validate → Approve or Reject
+#### Why This Methodology:
+Control Flow Testing was chosen for the application service because it has complex decision trees with multiple paths that must be thoroughly tested. The submission path validates input, checks if the pet exists, verifies the user exists, and creates an application record. The approval path finds the application, updates its status, and marks the pet as adopted. The decision path retrieves the application, runs validation logic, and determines whether to approve or reject. Each of these paths has branching based on validation results, and all must work correctly for the system to function.
 
-Each path has multiple branches based on validation results.
+Triangle Testing was applied because the application form has specific validation equivalence classes that must be handled correctly. The living situation field has requirements that vary based on pet type, where apartment living may be unsuitable for dogs but acceptable for cats. The experience field must distinguish between "none" (no experience) versus specified experience with duration. The reason field has a minimum character requirement to ensure meaningful applications. By testing these equivalence classes, we ensure all validation rules are properly enforced.
 
-#### Why Triangle Testing:
-Application form has specific validation equivalence classes:
-1. **Living situation:** Required, apartment vs house (different rules for dogs)
-2. **Experience:** Required, none vs some (affects approval)
-3. **Reason:** Required, short vs long (minimum character requirement)
-
-#### Why Data Flow Testing:
-Data flows through multiple transformations:
-1. **Form input** → Validation → Normalized data
-2. **Validated data** → Database → Application record
-3. **Application record** → Decision logic → Approval/rejection
-4. **Decision** → Pet status update → Adoption complete
+Data Flow Testing was necessary because data flows through multiple transformations in the application process. Form input passes through validation to become normalized data, which is then inserted into the database as an application record. The application record then flows through decision logic to determine approval or rejection, and finally the decision result can update the pet's status to complete the adoption. This end-to-end data flow must be tracked to ensure no data is lost or incorrectly transformed.
 
 #### Test Cases by Category:
 

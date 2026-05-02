@@ -117,20 +117,10 @@ Yu Gyeom Jeong and Xinyi Gu
 
 ### Methodology Used: Control Flow Testing + Data Flow Testing
 
-#### Why Control Flow Testing:
-The controller manages multiple HTTP response branches:
-- **Success branches:** 201 (created), 200 (OK)
-- **Client error branches:** 400 (bad request), 401 (unauthorized), 404 (not found)
-- **Server error branch:** 500 (internal error)
+#### Why This Methodology:
+Control Flow Testing was selected because the application controller manages multiple HTTP response branches that handle different scenarios. The controller must return 201 when successfully creating a new application, 200 when retrieving or updating applications, 400 for validation errors, 401 for authentication failures, 404 for not found conditions, and 500 for server errors. Each of these response codes represents a different path through the code that must be tested to ensure the API correctly communicates status to clients.
 
-Each condition was tested to ensure correct HTTP status codes.
-
-#### Why Data Flow Testing:
-The controller transforms data between layers:
-1. **Request parameters** → Extract petId, userId, applicationId
-2. **Request body** → Extract application data (livingSituation, experience, reason)
-3. **Service call** → Pass extracted data to service layer
-4. **Response transformation** → Convert service result to HTTP response
+Data Flow Testing was applied because the controller transforms data between layers of the application. It extracts parameters from the request URL (petId, userId, applicationId) and the request body (livingSituation, experience, reason), passes this extracted data to service methods, and then transforms the service results into appropriate HTTP responses. This transformation pipeline must correctly map all fields to ensure data integrity between the request and response.
 
 #### Test Coverage:
 

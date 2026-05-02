@@ -106,24 +106,10 @@ Yu Gyeom Jeong and Xinyi Gu
 
 ### Methodology Used: Triangle Testing + Data Flow Testing
 
-#### Why Triangle Testing (Equivalence Partitioning):
-This methodology was chosen because authentication involves input validation with distinct equivalence classes:
-1. **Valid email formats** vs **Invalid email formats** - Email validation is critical for security
-2. **Valid password lengths** vs **Invalid password lengths** - Password strength requirements
-3. **Existing users** vs **New users** - Registration collision detection
-4. **Valid credentials** vs **Invalid credentials** - Login security
+#### Why This Methodology:
+Triangle Testing (Equivalence Partitioning) was chosen for this unit because authentication involves critical input validation with distinct equivalence classes that must be thoroughly tested. Email validation is a fundamental security requirement where valid formats like "test@test.com" must be accepted while invalid formats like "invalid" or "user@" must be rejected. Password validation requires checking both minimum length requirements (8+ characters) and rejecting shorter values. Additionally, the system must differentiate between existing users attempting registration versus new users, and between valid versus invalid login credentials. By partitioning these inputs into equivalence classes and testing representative values from each class, we achieve comprehensive coverage of all possible input scenarios.
 
-Each equivalence class was tested with representative values to ensure coverage.
-
-#### Why Data Flow Testing:
-Authentication has complex data flows through multiple stages:
-1. Input → Validation (data sanitization)
-2. Valid input → Database query (data retrieval)
-3. Database result → Password comparison (data processing)
-4. Comparison result → Token generation (data transformation)
-5. Final user object → Response (data output)
-
-Data flow testing ensures all variable definitions and uses are correct throughout these stages.
+Data Flow Testing was applied because authentication has complex data flows through multiple stages where data is transformed, validated, and transmitted. The flow begins with user input passing through validation for sanitization, then proceeds to database queries for data retrieval, followed by password comparison for authentication, then token generation for session creation, and finally the user object being returned in the response. Data flow testing ensures all variable definitions and their uses are correct throughout these transformation stages, preventing issues like uninitialized variables, incorrect data propagation, or missing data in responses.
 
 #### Test Cases Created:
 
