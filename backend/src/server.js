@@ -6,7 +6,7 @@ const { Pool } = require('pg');
 const authRoutes = require('./routes/authRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const { createUsersTable, createPetsTable, createApplicationsTable } = require('../migrations/createTables');
-const { handleSearchPets } = require("./controllers/petController");
+const petRoutes = require("./routes/petRoutes");
 //const petRoutes = require("./routes/petRoutes");
 
 const pool = new Pool({
@@ -40,9 +40,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/applications', applicationRoutes);
-console.log("petRoutes type:", typeof petRoutes);
-//app.use("/api/pets", petRoutes);
-app.get("/api/pets/search", handleSearchPets);
+app.use("/api/pets", petRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Pet Adoption API' });

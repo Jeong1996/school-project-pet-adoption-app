@@ -7,9 +7,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
+import PetList from './pages/PetList';
 import ApplicationForm from './pages/ApplicationForm';
 import ApplicationSuccess from './pages/ApplicationSuccess';
 import Applications from './pages/Applications';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -33,6 +35,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/pets" 
+            element={
+              <PrivateRoute>
+                <PetList />
               </PrivateRoute>
             } 
           />

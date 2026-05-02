@@ -17,6 +17,7 @@ const createPetsTable = `
     breed TEXT,
     age INTEGER,
     location TEXT,
+    image TEXT,
     status TEXT DEFAULT 'available' CHECK (status IN ('available', 'adopted', 'archived')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );

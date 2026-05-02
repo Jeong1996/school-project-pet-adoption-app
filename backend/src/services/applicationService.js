@@ -25,6 +25,17 @@ async function getUserApplications(userId) {
   return result.rows;
 }
 
+async function getAllApplications() {
+  const result = await pool.query(`
+    SELECT a.*, u.name as user_name, u.email as user_email, p.name as pet_name, p.species, p.breed
+    FROM applications a
+    JOIN users u ON a.user_id = u.id
+    JOIN pets p ON a.pet_id = p.id
+    ORDER BY a.created_at DESC
+  `);
+  return result.rows;
+}
+
 async function approveApplication(applicationId) {
   const appCheck = await pool.query('SELECT * FROM applications WHERE id = $1', [applicationId]);
   if (appCheck.rows.length === 0) {
@@ -155,6 +166,7 @@ async function processApplication(applicationId) {
 module.exports = {
   submitApplication,
   getUserApplications,
+  getAllApplications,
   validateApplicationInput,
   approveApplication,
   rejectApplication,

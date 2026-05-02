@@ -17,23 +17,29 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const response = await apiLogin(email, password);
-    const userData = response.data.user;
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    return userData;
+    const { token, ...userData } = response.data.user;
+    const userWithToken = { ...userData, token };
+    setUser(userWithToken);
+    localStorage.setItem('user', JSON.stringify(userWithToken));
+    return userWithToken;
   };
 
   const register = async (email, password, name) => {
     const response = await apiRegister(email, password, name);
-    return response.data.user;
+    const { token, ...userData } = response.data.user;
+    const userWithToken = { ...userData, token };
+    setUser(userWithToken);
+    localStorage.setItem('user', JSON.stringify(userWithToken));
+    return userWithToken;
   };
 
   const adminLogin = async (email, password) => {
     const response = await apiAdminLogin(email, password);
-    const userData = response.data.user;
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    return userData;
+    const { token, ...userData } = response.data.user;
+    const userWithToken = { ...userData, token };
+    setUser(userWithToken);
+    localStorage.setItem('user', JSON.stringify(userWithToken));
+    return userWithToken;
   };
 
   const logout = () => {
