@@ -8,7 +8,7 @@
 2026-05-02
 
 ## 3. Engineers
-Yu Gyeom Jeong
+Yu Gyeom Jeong and Xinyi Gu
 
 ## 4. Automated Test Code (Summary)
 - **Search Pets:** Tests successful search, empty results, error handling
