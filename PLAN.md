@@ -246,3 +246,164 @@ CREATE TABLE applications (
 - [ ] Adopted pets archived and removed from available list
 - [ ] All unit tests pass
 - [ ] End-to-end workflow functions correctly
+
+---
+
+## Unit Test Reports Requirements
+
+### Automated Testing Strategy
+- All units must have automated tests using Jest (backend) and React Testing Library (frontend)
+- Tests must cover all functions, routes, and components
+- Each unit test report must be a separate document
+
+### Unit Selection Criteria
+- Each unit should have **high cohesion** (single responsibility)
+- Each unit should **not be too large** (manageable scope)
+- Units are defined by source files with related functionality
+
+### Unit Test Report Structure
+
+Each unit test report must contain the following sections:
+
+#### 1. Unit
+- List all source files being tested
+- Group by functionality (e.g., Authentication, Search, Applications)
+
+#### 2. Date
+- Date when the unit test was performed
+
+#### 3. Engineers
+- Name(s) of software engineer(s) who performed the test
+
+#### 4. Automated Test Code
+- Document inputs and expected outputs
+- Include code snippets showing test cases
+
+#### 5. Actual Outputs
+- Actual test results from running the tests
+- Pass/fail status for each test case
+
+#### 6. Test Methodology
+- Describe the testing methodology used (Triangle, Control Flow, or Data Flow)
+- Explain why the methodology was chosen
+- List all applicable test cases created
+
+### Units to Test
+
+#### Backend Units
+| Unit | Source Files | Description |
+|------|--------------|-------------|
+| Authentication Service | `authService.js`, `bcrypt.js` | Password hashing, user registration, login |
+| Authentication Controller | `authController.js` | HTTP request handling for auth |
+| Application Service | `applicationService.js` | Business logic for adoption applications |
+| Application Controller | `applicationController.js` | HTTP request handling for applications |
+| Application Routes | `applicationRoutes.js` | API route definitions |
+| Pet Routes | `petRoutes.js` | API route definitions for pets |
+| Admin Middleware | `adminMiddleware.js` | Authorization checks |
+| SQL Queries | `users.js`, `pets.js`, `applications.js` | Database operations |
+
+#### Frontend Units
+| Unit | Source Files | Description |
+|------|--------------|-------------|
+| Auth Forms | `Login.jsx`, `Register.jsx` | User authentication forms |
+| Pet Components | `PetCard.jsx`, `PetList.jsx` | Pet display components |
+| Search Component | `SearchBar.jsx` | Search and filter functionality |
+| Application Form | `ApplicationForm.jsx` | Adoption application form |
+| Navigation | `Navbar.jsx` | Navigation and routing |
+| API Service | `api.js` | API communication layer |
+
+---
+
+## Test Documentation
+
+### Unit Test Reports Directory Structure
+```
+/tests
+  /reports
+    /backend
+      auth-service-report.md
+      auth-controller-report.md
+      application-service-report.md
+      application-controller-report.md
+      admin-middleware-report.md
+      sql-queries-report.md
+    /frontend
+      auth-forms-report.md
+      pet-components-report.md
+      search-component-report.md
+      application-form-report.md
+      navigation-report.md
+      api-service-report.md
+```
+
+### Software & Environment Documentation
+
+Create a separate document (`SOFTWARE_ENVIRONMENT.md`) containing:
+
+#### 1. Development Software
+| Software | Version | Purpose |
+|----------|---------|---------|
+| Node.js | LTS version | Backend runtime |
+| npm | 10.x | Package management |
+| React | 19.x | Frontend framework |
+| Express.js | 5.x | Backend framework |
+| PostgreSQL | 15.x | Database |
+| bcryptjs | 3.x | Password hashing |
+| jsonwebtoken | 9.x | Token-based auth |
+
+#### 2. Testing Software
+| Software | Version | Purpose |
+|----------|---------|---------|
+| Jest | 30.x | Backend unit testing |
+| React Testing Library | 16.x | Frontend component testing |
+| supertest | 7.x | HTTP API testing |
+| @testing-library/jest-dom | 6.x | Frontend DOM testing |
+| @testing-library/user-event | 13.x | User interaction simulation |
+
+#### 3. Setup Instructions
+
+**Backend Setup:**
+```bash
+cd backend
+npm install
+# Configure .env file with database credentials
+npm run dev
+npm test
+```
+
+**Frontend Setup:**
+```bash
+cd frontend
+npm install
+npm start
+npm test
+```
+
+**Test Environment:**
+- Node.js environment for running tests
+- Jest configuration in `package.json`
+- React Testing Library configuration
+- Supertest for API endpoint testing
+
+---
+
+## Testing Methodologies
+
+### Triangle Testing (Equivalence Partitioning)
+Used for: Input validation, form fields, API parameters
+- Identify equivalence classes (valid/invalid inputs)
+- Test boundary values
+- Example: Email format validation, password strength
+
+### Control Flow Testing
+Used for: Business logic, decision-making functions
+- Statement coverage
+- Branch coverage
+- Path coverage
+- Example: Application approval logic, discount calculation
+
+### Data Flow Testing
+Used for: Data processing, state management
+- Track variable definitions and uses
+- Find uninitialized variables, unreachable code
+- Example: Form data propagation, API response handling

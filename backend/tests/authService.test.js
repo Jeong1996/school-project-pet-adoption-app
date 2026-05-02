@@ -69,7 +69,11 @@ describe('Auth Service', () => {
       
       const result = await authService.loginUser('test@test.com', 'password123');
       
-      expect(result).toEqual({ id: 1, email: 'test@test.com', name: 'John', role: 'user' });
+      expect(result.id).toBe(1);
+      expect(result.email).toBe('test@test.com');
+      expect(result.name).toBe('John');
+      expect(result.role).toBe('user');
+      expect(result.token).toBeDefined();
     });
   });
 
@@ -97,7 +101,11 @@ describe('Auth Service', () => {
       
       const result = await authService.loginAdmin('admin@test.com', 'password123');
       
-      expect(result).toEqual({ id: 1, email: 'admin@test.com', name: 'Admin', role: 'admin' });
+      expect(result.id).toBe(1);
+      expect(result.email).toBe('admin@test.com');
+      expect(result.name).toBe('Admin');
+      expect(result.role).toBe('admin');
+      expect(result.token).toBeDefined();
     });
   });
 
