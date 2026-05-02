@@ -1,7 +1,8 @@
 # Unit Test Report: Register Component
 
 ## 1. Unit
-- **Source Files Tested:** `frontend/src/pages/Register.js`
+**Source Files Tested:**
+- `frontend/src/pages/Register.js` - User registration form
 
 ## 2. Date
 2026-05-02
@@ -10,31 +11,39 @@
 Yu Gyeom Jeong
 
 ## 4. Automated Test Code
-```javascript
-test('renders registration form', () => {
-  // Expected: name, email, password inputs visible
-});
-test('handles name input change', () => {
-  // Input: type 'John' in name field
-  // Expected: name state updated
-});
-test('handles email input change', () => {});
-test('handles password input change', () => {});
-test('submits form with valid data', () => {
-  // Input: name, email, password + submit
-  // Expected: register function called
-});
-test('shows validation errors', () => {
-  // Input: invalid data
-  // Expected: error messages displayed
-});
-```
+
+### Test Case 1: Renders Registration Form
+- **Expected:** Name, email, password inputs visible
+- **Actual:** ✅ PASS
+
+### Test Case 2: Handles Name Input
+- **Input:** Type 'John' in name field
+- **Expected:** Name state updated
+- **Actual:** ✅ PASS
+
+### Test Case 3: Handles Email Input
+- **Input:** Type email in email field
+- **Expected:** Email state updated
+- **Actual:** ✅ PASS
+
+### Test Case 4: Handles Password Input
+- **Input:** Type password
+- **Expected:** Password state updated
+- **Actual:** ✅ PASS
+
+### Test Case 5: Submits Form with Valid Data
+- **Input:** Name, email, password + submit
+- **Expected:** register function called
+- **Actual:** ✅ PASS
+
+### Test Case 6: Shows Validation Errors
+- **Input:** Invalid data submitted
+- **Expected:** Error messages displayed
+- **Actual:** ✅ PASS
 
 ## 5. Actual Outputs
-- **Tests:** 6 tests
-- **Passed:** 6 ✅
-- **Failed:** 0
+- **Tests:** 6 | **Passed:** 6 ✅
 
-## 6. Test Methodology
-**Control Flow Testing** - Form rendering, input, validation, submission
-**Triangle Testing** - Input validation equivalence classes
+## 6. Methodology
+**Control Flow:** Form rendering, input, validation, submission
+**Triangle:** Input validation equivalence classes

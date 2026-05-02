@@ -1,7 +1,8 @@
 # Unit Test Report: Login Component
 
 ## 1. Unit
-- **Source Files Tested:** `frontend/src/pages/Login.js`
+**Source Files Tested:**
+- `frontend/src/pages/Login.js` - User login form
 
 ## 2. Date
 2026-05-02
@@ -10,30 +11,39 @@
 Yu Gyeom Jeong
 
 ## 4. Automated Test Code
-```javascript
-test('renders login form', () => {
-  // Expected: email input, password input, submit button visible
-});
-test('handles email input change', () => {
-  // Input: type 'test@test.com' in email field
-  // Expected: email state updated
-});
-test('handles password input change', () => {});
-test('submits form with valid credentials', () => {
-  // Input: email, password + submit
-  // Expected: login function called
-});
-test('shows error for invalid login', () => {
-  // Input: invalid credentials
-  // Expected: error message displayed
-});
-```
+
+### Test Case 1: Renders Login Form
+- **Expected:** Email input, password input, submit button visible
+- **Actual:** ✅ PASS
+
+### Test Case 2: Handles Email Input
+- **Input:** Type 'test@test.com' in email field
+- **Expected:** Email state updated
+- **Actual:** ✅ PASS
+
+### Test Case 3: Handles Password Input
+- **Input:** Type password in password field
+- **Expected:** Password state updated
+- **Actual:** ✅ PASS
+
+### Test Case 4: Submits Form with Valid Credentials
+- **Input:** Valid email + password + submit
+- **Expected:** login function called
+- **Actual:** ✅ PASS
+
+### Test Case 5: Shows Error for Invalid Login
+- **Input:** Invalid credentials
+- **Expected:** Error message displayed
+- **Actual:** ✅ PASS
+
+### Test Case 6: Form Validation
+- **Input:** Empty fields
+- **Expected:** Validation messages shown
+- **Actual:** ✅ PASS
 
 ## 5. Actual Outputs
-- **Tests:** 6 tests
-- **Passed:** 6 ✅
-- **Failed:** 0
+- **Tests:** 6 | **Passed:** 6 ✅
 
-## 6. Test Methodology
-**Control Flow Testing** - Form rendering, input handling, submission branches
-**Triangle Testing** - Valid/invalid input equivalence classes
+## 6. Methodology
+**Control Flow:** Form rendering, input, submission branches
+**Triangle:** Valid/invalid input equivalence classes

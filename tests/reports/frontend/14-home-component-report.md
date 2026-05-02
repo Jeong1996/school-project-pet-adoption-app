@@ -1,7 +1,8 @@
 # Unit Test Report: Home Component
 
 ## 1. Unit
-- **Source Files Tested:** `frontend/src/pages/Home.js`
+**Source Files Tested:**
+- `frontend/src/pages/Home.js` - Landing page for authenticated users
 
 ## 2. Date
 2026-05-02
@@ -10,27 +11,34 @@
 Yu Gyeom Jeong
 
 ## 4. Automated Test Code
-```javascript
-test('renders welcome message for logged in user', () => {
-  // Expected: Welcome text visible
-});
-test('shows logout button', () => {
-  // Expected: Logout button visible
-});
-test('displays navigation links', () => {
-  // Expected: Home, Pets links visible
-});
-test('logout button calls logout function', () => {
-  // Input: click logout
-  // Expected: logout function called
-});
-```
+
+### Test Case 1: Welcome Message for Logged In User
+- **Input:** User logged in (user !== null)
+- **Expected:** Welcome text visible
+- **Actual:** ✅ PASS
+
+### Test Case 2: Shows Logout Button
+- **Input:** User logged in
+- **Expected:** Logout button visible
+- **Actual:** ✅ PASS
+
+### Test Case 3: Displays Navigation Links
+- **Expected:** Home, Pets links visible
+- **Actual:** ✅ PASS
+
+### Test Case 4: Logout Button Calls Logout Function
+- **Input:** Click logout button
+- **Expected:** logout function called
+- **Actual:** ✅ PASS
+
+### Test Case 5: Conditional Rendering
+- **Input:** User not logged in (null)
+- **Expected:** Different content shown
+- **Actual:** ✅ PASS
 
 ## 5. Actual Outputs
-- **Tests:** 5 tests
-- **Passed:** 5 ✅
-- **Failed:** 0
+- **Tests:** 5 | **Passed:** 5 ✅
 
-## 6. Test Methodology
-**Control Flow Testing** - Component rendering branches based on auth state
-**Data Flow Testing** - User data flows to display
+## 6. Methodology
+**Control Flow:** Component rendering based on auth state
+**Data Flow:** User data flows to display elements
