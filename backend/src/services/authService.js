@@ -1,7 +1,10 @@
 // Author: Yu Gyeom Jeong
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const { usersQueries } = require('../sql/users');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'defaultsecret';
 
 async function registerUser(email, password, name) {
   const existing = await pool.query(usersQueries.findByEmail, [email]);
@@ -29,7 +32,8 @@ async function loginUser(email, password) {
   }
   
   const { password_hash, ...userWithoutPassword } = user;
-  return userWithoutPassword;
+  const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+  return { ...userWithoutPassword, token };
 }
 
 async function loginAdmin(email, password) {
@@ -46,7 +50,8 @@ async function loginAdmin(email, password) {
   }
   
   const { password_hash, ...userWithoutPassword } = user;
-  return userWithoutPassword;
+  const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+  return { ...userWithoutPassword, token };
 }
 
 function validateRegistrationInput(email, password, name) {

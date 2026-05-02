@@ -6,14 +6,17 @@ function Home() {
   const navigate = useNavigate();
 
   const handleBrowsePets = () => {
-    // For now, navigate directly to apply for pet id 1
-    // In a full implementation, this would show a pet list
-    navigate('/apply/1');
+    navigate('/pets');
   };
 
   const handleViewApplications = () => {
     navigate('/applications');
   };
+
+  const appsTitle = user?.role === 'admin' ? 'Applications' : 'My Applications';
+  const appsDesc = user?.role === 'admin' 
+    ? 'Track the status of adoption applications' 
+    : 'Track the status of your adoption applications';
 
   return (
     <div className="main-container">
@@ -32,8 +35,8 @@ function Home() {
 
           <div className="dashboard-card">
             <div className="card-icon">📋</div>
-            <h3>My Applications</h3>
-            <p>Track the status of your adoption applications</p>
+            <h3>{appsTitle}</h3>
+            <p>{appsDesc}</p>
             <button className="btn-primary" onClick={handleViewApplications}>View Applications</button>
           </div>
 

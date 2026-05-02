@@ -3,14 +3,17 @@ const router = express.Router();
 const { 
   submitApplication, 
   getUserApplications,
+  getAllApplications,
   approveApplication,
   rejectApplication,
   processApplication
 } = require('../controllers/applicationController');
 const adminMiddleware = require('../middleware/adminMiddleware');
+const userMiddleware = require('../middleware/userMiddleware');
 
-router.post('/:petId', submitApplication);
-router.get('/user/:userId', getUserApplications);
+router.post('/:petId', userMiddleware, submitApplication);
+router.get('/user/:userId', userMiddleware, getUserApplications);
+router.get('/', adminMiddleware, getAllApplications);
 
 // User-level: auto-process application with validation
 router.put('/:applicationId/process', processApplication);

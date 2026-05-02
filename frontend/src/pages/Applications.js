@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { getUserApplications } from '../services/api';
+import { getUserApplications, getAllApplications, approveApplication, rejectApplication } from '../services/api';
 
 function Applications() {
   const { user } = useAuth();
@@ -9,12 +9,17 @@ function Applications() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (!user) return;
+    
     const fetchApplications = async () => {
-      if (!user?.id) return;
-      
       try {
-        const response = await getUserApplications(user.id);
-        setApplications(response.data.applications);
+        let response;
+        if (user.role === 'admin') {
+          response = await getAllApplications();
+        } else {
+          response = await getUserApplications(user.id);
+        }
+        setApplications(response.data.applications || []);
       } catch (err) {
         setError('Failed to load applications');
       } finally {
@@ -23,7 +28,29 @@ function Applications() {
     };
 
     fetchApplications();
-  }, [user?.id]);
+  }, [user]);
+
+  const handleApprove = async (id) => {
+    try {
+      await approveApplication(id);
+      setApplications(applications.map(app => 
+        app.id === id ? { ...app, status: 'approved' } : app
+      ));
+    } catch (err) {
+      setError('Failed to approve application');
+    }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      await rejectApplication(id);
+      setApplications(applications.map(app => 
+        app.id === id ? { ...app, status: 'rejected' } : app
+      ));
+    } catch (err) {
+      setError('Failed to reject application');
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -33,6 +60,8 @@ function Applications() {
     }
   };
 
+  const pageTitle = user?.role === 'admin' ? 'Applications' : 'My Applications';
+
   if (loading) {
     return <div className="main-container"><div className="loading">Loading...</div></div>;
   }
@@ -40,14 +69,13 @@ function Applications() {
   return (
     <div className="main-container">
       <div className="home">
-        <h1>My Applications</h1>
+        <h1>{pageTitle}</h1>
         
         {error && <div className="form-error">{error}</div>}
         
         {applications.length === 0 ? (
           <div className="empty-state">
-            <p>You haven't submitted any applications yet.</p>
-            <p>Browse pets to find your perfect companion!</p>
+            <p>No applications found.</p>
           </div>
         ) : (
           <div className="applications-list">
@@ -60,6 +88,11 @@ function Applications() {
                   </span>
                 </div>
                 <div className="application-details">
+                  {user?.role === 'admin' && (
+                    <>
+                      <p><strong>Applicant:</strong> {app.user_name} ({app.user_email})</p>
+                    </>
+                  )}
                   <p><strong>Species:</strong> {app.species}</p>
                   <p><strong>Breed:</strong> {app.breed}</p>
                   <p><strong>Living Situation:</strong> {app.living_situation}</p>
@@ -67,6 +100,12 @@ function Applications() {
                   <p><strong>Reason:</strong> {app.reason}</p>
                   <p><strong>Submitted:</strong> {new Date(app.created_at).toLocaleDateString()}</p>
                 </div>
+                {user?.role === 'admin' && app.status === 'pending' && (
+                  <div className="app-actions">
+                    <button className="btn-approve" onClick={() => handleApprove(app.id)}>Approve</button>
+                    <button className="btn-reject" onClick={() => handleReject(app.id)}>Reject</button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

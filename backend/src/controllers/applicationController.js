@@ -5,13 +5,17 @@ async function submitApplication(req, res) {
   const userId = req.body.userId || req.user?.id;
   const { livingSituation, experience, reason } = req.body;
   
+  if (!userId) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  
+  if (req.user?.role === 'admin') {
+    return res.status(403).json({ error: 'Admins cannot submit adoption applications' });
+  }
+  
   const errors = applicationService.validateApplicationInput({ livingSituation, experience, reason });
   if (errors.length > 0) {
     return res.status(400).json({ error: errors[0] });
-  }
-  
-  if (!userId) {
-    return res.status(401).json({ error: 'Authentication required' });
   }
   
   try {
@@ -35,6 +39,16 @@ async function getUserApplications(req, res) {
   
   try {
     const applications = await applicationService.getUserApplications(userId);
+    res.json({ applications });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+async function getAllApplications(req, res) {
+  try {
+    const applications = await applicationService.getAllApplications();
     res.json({ applications });
   } catch (err) {
     console.error(err);
@@ -93,6 +107,7 @@ async function processApplication(req, res) {
 module.exports = { 
   submitApplication, 
   getUserApplications,
+  getAllApplications,
   approveApplication,
   rejectApplication,
   processApplication
