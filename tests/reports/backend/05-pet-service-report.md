@@ -135,9 +135,63 @@ Yu Gyeom Jeong and Xinyi Gu
 - Empty string filters
 - All filters combined
 
+### Test Case 25: Boundary - Negative Age (-1)
+- **Input:** `searchPets({ age: '-1' })`
+- **Expected Output:** SQL query with age = -1
+- **Actual Output:** ✅ Query contains parameter [-1]
+- **Test Status:** PASS
+
+### Test Case 26: Boundary - Very High Unrealistic Age (999)
+- **Input:** `searchPets({ age: '999' })`
+- **Expected Output:** SQL query with age = 999
+- **Actual Output:** ✅ Query contains parameter [999]
+- **Test Status:** PASS
+
+### Test Case 27: Equivalence - Numeric Species String
+- **Input:** `searchPets({ species: '123' })`
+- **Expected Output:** SQL with species ILIKE '%123%'
+- **Actual Output:** ✅ Numeric species handled correctly
+- **Test Status:** PASS
+
+### Test Case 28: Equivalence - Species with Special Characters
+- **Input:** `searchPets({ species: 'cat@home!' })`
+- **Expected Output:** SQL with species ILIKE '%cat@home!%'
+- **Actual Output:** ✅ Special characters handled correctly
+- **Test Status:** PASS
+
+### Test Case 29: Equivalence - Non-Numeric Age
+- **Input:** `searchPets({ age: 'abc' })`
+- **Expected Output:** SQL query with age = NaN
+- **Actual Output:** ✅ Non-numeric string passed through (not validated)
+- **Test Status:** PASS
+
+### Test Case 30: Equivalence - Typical Pet Age (1 year)
+- **Input:** `searchPets({ age: '1' })`
+- **Expected Output:** SQL query with age = 1
+- **Actual Output:** ✅ Age converted to number correctly
+- **Test Status:** PASS
+
+### Test Case 31: Equivalence - Older Typical Pet Age (15 years)
+- **Input:** `searchPets({ age: '15' })`
+- **Expected Output:** SQL query with age = 15
+- **Actual Output:** ✅ Age converted to number correctly
+- **Test Status:** PASS
+
+### Test Case 32: SQL Injection - Species with SQL Injection Attempt
+- **Input:** `searchPets({ species: "'; DROP TABLE pets; --" })`
+- **Expected Output:** Parameterized query prevents injection
+- **Actual Output:** ✅ Species treated as string parameter, not raw SQL
+- **Test Status:** PASS
+
+### Test Case 33: SQL Injection - Age with SQL Injection Attempt
+- **Input:** `searchPets({ age: '1 OR 1=1' })`
+- **Expected Output:** Query parameterized, no injection possible
+- **Actual Output:** ✅ Age parsed to NaN, no injection
+- **Test Status:** PASS
+
 ## 5. Actual Outputs
-- **Total Tests:** 24
-- **Passed:** 24 ✅
+- **Total Tests:** 33
+- **Passed:** 33 ✅
 - **Failed:** 0
 - **Errors:** 0
 
@@ -158,9 +212,9 @@ Data Flow Testing was done here as well because the filters need to be carried t
 **Triangle Testing - Filter Equivalence:**
 | Filter | Valid Values | Invalid Values | Boundary |
 |--------|--------------|----------------|----------|
-| species | dog, cat, Dog, DOG | unicorn, 123 | Empty string |
+| species | dog, cat, Dog, DOG | unicorn, 123, '; DROP TABLE | Empty string |
 | breed | Golden, golden | Special chars | Empty string |
-| age | 0, 1, 100 | -1, abc | 0 (min) |
+| age | 0, 1, 15, 100 | -1, abc, 999, 1 OR 1=1 | 0 (min), -1 (below min) |
 | location | NYC, new york | Empty | Empty string |
 
 **Control Flow - Operation Paths:**
@@ -182,4 +236,7 @@ Data Flow Testing was done here as well because the filters need to be carried t
 #### Coverage Achieved:
 - **All CRUD operations:** 100%
 - **All filter combinations:** Tested
-- **All boundary values:** Tested
+- **All boundary values:** Tested (age: -1, 0, 1, 15, 999; string: empty, 1000 chars)
+- **All age equivalence classes:** Tested (negative, zero, typical, high, non-numeric)
+- **All species equivalence classes:** Tested (alphabetic, numeric, special chars, SQL injection)
+- **SQL injection prevention:** Verified (parameterized queries prevent injection)
