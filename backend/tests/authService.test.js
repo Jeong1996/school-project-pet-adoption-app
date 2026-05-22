@@ -115,7 +115,7 @@ describe('Auth Service', () => {
       expect(errors).toContain('All fields required');
     });
 
-    test('returns error if email invalid', () => {
+    test('returns error if email invalid (no @ symbol)', () => {
       const errors = authService.validateRegistrationInput('invalid', 'password123', 'John');
       expect(errors).toContain('Invalid email format');
     });
@@ -127,6 +127,43 @@ describe('Auth Service', () => {
 
     test('returns empty array if valid', () => {
       const errors = authService.validateRegistrationInput('test@test.com', 'password123', 'John');
+      expect(errors).toEqual([]);
+    });
+
+    test('returns error for email with no domain part', () => {
+      const errors = authService.validateRegistrationInput('user@', 'password123', 'John');
+      expect(errors).toContain('Invalid email format');
+    });
+
+    test('returns error for email with no local part', () => {
+      const errors = authService.validateRegistrationInput('@domain.com', 'password123', 'John');
+      expect(errors).toContain('Invalid email format');
+    });
+
+    test('accepts email with plus addressing', () => {
+      const errors = authService.validateRegistrationInput('user+tag@domain.com', 'password123', 'John');
+      expect(errors).toEqual([]);
+    });
+
+    test('rejects password at 7 characters', () => {
+      const errors = authService.validateRegistrationInput('test@test.com', '1234567', 'John');
+      expect(errors).toContain('Password must be at least 8 characters');
+    });
+
+    test('accepts password at exactly 8 characters', () => {
+      const errors = authService.validateRegistrationInput('test@test.com', '12345678', 'John');
+      expect(errors).toEqual([]);
+    });
+
+    test('accepts password at 72 characters (bcrypt limit)', () => {
+      const longPassword = 'a'.repeat(72);
+      const errors = authService.validateRegistrationInput('test@test.com', longPassword, 'John');
+      expect(errors).toEqual([]);
+    });
+
+    test('accepts password at 73 characters (exceeds bcrypt limit, but allowed)', () => {
+      const longerPassword = 'a'.repeat(73);
+      const errors = authService.validateRegistrationInput('test@test.com', longerPassword, 'John');
       expect(errors).toEqual([]);
     });
   });

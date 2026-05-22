@@ -80,6 +80,18 @@ describe('Application Service', () => {
       const errors = applicationService.validateApplicationInput({ livingSituation: 'test', experience: 'test', reason: 'test' });
       expect(errors).toEqual([]);
     });
+
+    test('returns errors if fields contain only whitespace', () => {
+      const errors = applicationService.validateApplicationInput({ livingSituation: '   ', experience: '   ', reason: '   ' });
+      expect(errors).toContain('Living situation is required');
+      expect(errors).toContain('Experience is required');
+      expect(errors).toContain('Reason for adoption is required');
+    });
+
+    test('accepts reason at exactly 10 characters', () => {
+      const errors = applicationService.validateApplicationInput({ livingSituation: 'house with yard', experience: '5 years', reason: '1234567890' });
+      expect(errors).toEqual([]);
+    });
   });
 
   describe('validateApplicationForDecision', () => {
@@ -113,6 +125,47 @@ describe('Application Service', () => {
 
       expect(decision.approved).toBe(true);
       expect(decision.rejected).toBe(false);
+    });
+
+    test('rejects application with unsuitable housing AND no experience', () => {
+      const application = { living_situation: 'I live in a small apartment', experience: 'none', reason: 'I have always loved animals and want to give a pet a home' };
+      const decision = applicationService.validateApplicationForDecision(application);
+
+      expect(decision.rejected).toBe(true);
+      expect(decision.approved).toBe(false);
+      expect(decision.reasons).toContain('Unsuitable living situation for this pet type');
+      expect(decision.reasons).toContain('No prior pet experience');
+    });
+
+    test('rejects application with unsuitable housing AND short reason', () => {
+      const application = { living_situation: 'Apartment living is what I have', experience: 'I have had pets for years', reason: 'short' };
+      const decision = applicationService.validateApplicationForDecision(application);
+
+      expect(decision.rejected).toBe(true);
+      expect(decision.approved).toBe(false);
+      expect(decision.reasons).toContain('Unsuitable living situation for this pet type');
+      expect(decision.reasons).toContain('Reason for adoption is too short');
+    });
+
+    test('rejects application with no experience AND short reason', () => {
+      const application = { living_situation: 'I have a big house with a yard', experience: 'no experience at all', reason: 'want' };
+      const decision = applicationService.validateApplicationForDecision(application);
+
+      expect(decision.rejected).toBe(true);
+      expect(decision.approved).toBe(false);
+      expect(decision.reasons).toContain('No prior pet experience');
+      expect(decision.reasons).toContain('Reason for adoption is too short');
+    });
+
+    test('rejects application when all three conditions fail', () => {
+      const application = { living_situation: 'I live in an apartment', experience: 'I have never owned any pets before', reason: 'cute' };
+      const decision = applicationService.validateApplicationForDecision(application);
+
+      expect(decision.rejected).toBe(true);
+      expect(decision.approved).toBe(false);
+      expect(decision.reasons).toContain('Unsuitable living situation for this pet type');
+      expect(decision.reasons).toContain('No prior pet experience');
+      expect(decision.reasons).toContain('Reason for adoption is too short');
     });
   });
 

@@ -120,15 +120,51 @@ Yu Gyeom Jeong and Xinyi Gu
 - **Actual Output:** ✅ Auto-approved based on validation
 - **Test Status:** PASS
 
+### Test Case 18: Decision Table R5 - Unsuitable Housing + No Experience
+- **Input:** `validateApplicationForDecision({ living_situation: 'I live in a small apartment', experience: 'none', reason: 'I have always loved animals and want to give a pet a home' })`
+- **Expected Output:** `{ rejected: true, reasons: ['Unsuitable living situation...', 'No prior pet experience'] }`
+- **Actual Output:** ✅ Both rejection reasons returned
+- **Test Status:** PASS
+
+### Test Case 19: Decision Table R6 - Unsuitable Housing + Short Reason
+- **Input:** `validateApplicationForDecision({ living_situation: 'Apartment living is what I have', experience: 'I have had pets for years', reason: 'short' })`
+- **Expected Output:** `{ rejected: true, reasons: ['Unsuitable living situation...', 'Reason for adoption is too short'] }`
+- **Actual Output:** ✅ Both rejection reasons returned
+- **Test Status:** PASS
+
+### Test Case 20: Decision Table R7 - No Experience + Short Reason
+- **Input:** `validateApplicationForDecision({ living_situation: 'I have a big house with a yard', experience: 'no experience at all', reason: 'want' })`
+- **Expected Output:** `{ rejected: true, reasons: ['No prior pet experience', 'Reason for adoption is too short'] }`
+- **Actual Output:** ✅ Both rejection reasons returned
+- **Test Status:** PASS
+
+### Test Case 21: Decision Table R8 - All Three Rejection Conditions
+- **Input:** `validateApplicationForDecision({ living_situation: 'I live in an apartment', experience: 'I have never owned any pets before', reason: 'cute' })`
+- **Expected Output:** `{ rejected: true, reasons: ['Unsuitable living situation...', 'No prior pet experience', 'Reason for adoption is too short'] }`
+- **Actual Output:** ✅ All three rejection reasons returned
+- **Test Status:** PASS
+
+### Test Case 22: Validate Input - Whitespace-Only Fields
+- **Input:** `validateApplicationInput({ livingSituation: '   ', experience: '   ', reason: '   ' })`
+- **Expected Output:** Returns ['Living situation is required', 'Experience is required', 'Reason for adoption is required']
+- **Actual Output:** ✅ All three errors returned
+- **Test Status:** PASS
+
+### Test Case 23: Validate Input - Reason at Exactly 10 Characters (Boundary)
+- **Input:** `validateApplicationInput({ livingSituation: 'house with yard', experience: '5 years', reason: '1234567890' })`
+- **Expected Output:** Returns [] (valid)
+- **Actual Output:** ✅ No validation errors
+- **Test Status:** PASS
+
 ## 5. Actual Outputs
-- **Total Tests:** 17
-- **Passed:** 17 ✅
+- **Total Tests:** 23
+- **Passed:** 23 ✅
 - **Failed:** 0
 - **Errors:** 0
 
 ## 6. Test Methodology
 
-### Methodology Used: Control Flow Testing + Triangle Testing + Data Flow Testing
+### Methodology Used: Control Flow Testing + Triangle Testing + Data Flow Testing + Decision Table Testing
 
 #### Why This Methodology:
 Control Flow Testing was chosen for the application service because it has complex decision trees with multiple paths that must be thoroughly tested. The submission path validates input, checks if the pet exists, verifies the user exists, and creates an application record. The approval path finds the application, updates its status, and marks the pet as adopted. The decision path retrieves the application, runs validation logic, and determines whether to approve or reject. Each of these paths has branching based on validation results, and all must work correctly for the system to function.
@@ -136,6 +172,8 @@ Control Flow Testing was chosen for the application service because it has compl
 Triangle Testing was applied because the application form has specific validation equivalence classes that must be handled correctly. The living situation field has requirements that vary based on pet type, where apartment living may be unsuitable for dogs but acceptable for cats. The experience field must distinguish between "none" (no experience) versus specified experience with duration. The reason field has a minimum character requirement to ensure meaningful applications. By testing these equivalence classes, we ensure all validation rules are properly enforced.
 
 Data Flow Testing was necessary because data flows through multiple transformations in the application process. Form input passes through validation to become normalized data, which is then inserted into the database as an application record. The application record then flows through decision logic to determine approval or rejection, and finally the decision result can update the pet's status to complete the adoption. This end-to-end data flow must be tracked to ensure no data is lost or incorrectly transformed.
+
+Decision Table Testing was applied to the `validateApplicationForDecision` function, which has three independent conditions (unsuitable housing, no experience, short reason) that combine to produce rejection outcomes. A full 8-rule decision table covers all combinations (2^3 = 8 rules), including the four previously untested compound rejection scenarios. This ensures that no combination of rejection criteria is missed by the business logic.
 
 #### Test Cases by Category:
 
@@ -146,13 +184,25 @@ Data Flow Testing was necessary because data flows through multiple transformati
 | experience | "none" + additional, years specified | "none" alone | "none" |
 | reason | 20+ characters | < 20 characters | 20 chars |
 
+**Decision Table - Application Validation (8 Rules):**
+| Rule | Unsuitable Housing | No Experience | Short Reason | Expected Result |
+|------|-------------------|---------------|--------------|-----------------|
+| R1 | N | N | N | ✅ Approve |
+| R2 | Y | N | N | ✅ Reject (unsuitable) |
+| R3 | N | Y | N | ✅ Reject (no experience) |
+| R4 | N | N | Y | ✅ Reject (short reason) |
+| R5 | Y | Y | N | ✅ Reject (both unsuitable + no exp) |
+| R6 | Y | N | Y | ✅ Reject (both unsuitable + short) |
+| R7 | N | Y | Y | ✅ Reject (both no exp + short) |
+| R8 | Y | Y | Y | ✅ Reject (all three reasons) |
+
 **Control Flow - Decision Logic:**
 | Condition | Expected Decision |
 |-----------|------------------|
 | House + Experience + Long reason | Approve |
-| Apartment + Dog | Reject |
-| No experience | Reject |
-| Short reason | Reject |
+| Apartment (no yard/balcony/garden) | Reject |
+| No experience ("none", "never", "no experience") | Reject |
+| Short reason (< 10 characters) | Reject |
 
 **Data Flow - Field Propagation:**
 | Field | Input → Validation → DB → Decision |
@@ -164,5 +214,7 @@ Data Flow Testing was necessary because data flows through multiple transformati
 #### Coverage Achieved:
 - **All validation rules:** Tested
 - **All approval paths:** Tested
-- **All rejection paths:** Tested
+- **All rejection paths:** Tested (8/8 decision table rules)
 - **Data transformations:** Verified
+- **Boundary values:** Reason length boundary at 10 chars tested
+- **Whitespace handling:** Trimmed empty fields tested

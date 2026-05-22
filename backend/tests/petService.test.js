@@ -270,6 +270,76 @@ describe('Pet Service - Control Flow & Data Flow Testing', () => {
         await petService.searchPets({ species: longString });
         expect(pool.query).toHaveBeenCalledWith(expect.any(String), [`%${longString}%`]);
       });
+
+      test('Boundary: Negative age (invalid class lower bound)', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ age: '-1' });
+        expect(pool.query).toHaveBeenCalledWith(expect.any(String), [-1]);
+      });
+
+      test('Boundary: Very high unrealistic age', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ age: '999' });
+        expect(pool.query).toHaveBeenCalledWith(expect.any(String), [999]);
+      });
+    });
+
+    describe('Equivalence Classes - Species', () => {
+      test('Equivalence: Numeric species string', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ species: '123' });
+        expect(pool.query).toHaveBeenCalledWith(
+          expect.stringContaining('species ILIKE'),
+          ['%123%']
+        );
+      });
+
+      test('Equivalence: Species with special characters', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ species: 'cat@home!' });
+        expect(pool.query).toHaveBeenCalledWith(
+          expect.stringContaining('species ILIKE'),
+          ['%cat@home!%']
+        );
+      });
+    });
+
+    describe('Equivalence Classes - Age', () => {
+      test('Equivalence: Non-numeric age string', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ age: 'abc' });
+        expect(pool.query).toHaveBeenCalledWith(expect.any(String), [NaN]);
+      });
+
+      test('Equivalence: Typical pet age (1 year)', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ age: '1' });
+        expect(pool.query).toHaveBeenCalledWith(expect.any(String), [1]);
+      });
+
+      test('Equivalence: Older typical pet age (15 years)', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ age: '15' });
+        expect(pool.query).toHaveBeenCalledWith(expect.any(String), [15]);
+      });
+    });
+
+    describe('Security - SQL Injection Prevention', () => {
+      test('SQL Injection: species filter with SQL injection attempt', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        const sqlInjection = "'; DROP TABLE pets; --";
+        await petService.searchPets({ species: sqlInjection });
+        expect(pool.query).toHaveBeenCalledWith(
+          expect.stringContaining('species ILIKE'),
+          [`%${sqlInjection}%`]
+        );
+      });
+
+      test('SQL Injection: age filter with non-numeric', async () => {
+        pool.query.mockResolvedValue({ rows: [] });
+        await petService.searchPets({ age: '1 OR 1=1' });
+        expect(pool.query).toHaveBeenCalledWith(expect.any(String), [NaN]);
+      });
     });
   });
 });
