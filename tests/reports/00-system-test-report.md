@@ -191,9 +191,3 @@ Clearing filters re‑fetches the full list (UI calls `getPets()` again on the "
 6. Cross‑checked persisted state in PostgreSQL using `psql`.
 7. Exercised admin authorization boundaries (admin‑only routes reject user JWTs with 403; non‑admin emails rejected by `/admin/login` with 401).
 8. Stopped both dev servers after testing.
-
-## 9. Notes / Observations
-- The plan text says "password < 6 chars" is blocked; the actual rule implemented in both `authService.validateRegistrationInput` and `Register.js` is **≥ 8 characters**. Behavior matches the intent (short passwords are rejected) — flagged here for spec accuracy.
-- The `backend/.env` in this environment does not set `JWT_SECRET`; the service falls back to `defaultsecret`. Recommended to add a real secret before deployment.
-- Default admin `admin@test.com` / `admin123` and seeded pets/users are present from the startup migration + seed, so UC3 and UC5 preconditions are satisfied automatically.
-- The admin approval endpoint also flips the related pet to `adopted` indirectly via UI flow, but the API itself only updates the application status. This was the behavior tested.
