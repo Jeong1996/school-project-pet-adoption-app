@@ -18,9 +18,14 @@ const createPetsTable = `
     age INTEGER,
     location TEXT,
     image TEXT,
+    description TEXT,
     status TEXT DEFAULT 'available' CHECK (status IN ('available', 'adopted', 'archived')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
+`;
+
+const addPetsDescriptionColumn = `
+  ALTER TABLE pets ADD COLUMN IF NOT EXISTS description TEXT;
 `;
 
 const createApplicationsTable = `
@@ -39,5 +44,6 @@ const createApplicationsTable = `
 module.exports = {
   createUsersTable,
   createPetsTable,
+  addPetsDescriptionColumn,
   createApplicationsTable
 };
