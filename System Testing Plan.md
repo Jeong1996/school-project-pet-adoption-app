@@ -46,9 +46,7 @@ User Registration, User Login, Admin Login, View/Search Pets, and Submit Adoptio
    DB_NAME=pet_adoption
    DB_USER=your_postgres_user
    DB_PASSWORD=your_postgres_password
-   JWT_SECRET=your_jwt_secret_key
    ```
-   > Note: `JWT_SECRET` is required. If omitted, the server falls back to the hard‑coded string `defaultsecret`, which is acceptable for local testing only and must be replaced before any non‑local deployment.
 
 4. Create the PostgreSQL database `pet_adoption` and load the provided schema/seed data.
 5. Start backend: `cd backend && npm start` (port 3001)
