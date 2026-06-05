@@ -215,45 +215,7 @@ If any of these are off, jump to [Troubleshooting](#10-troubleshooting).
 
 ---
 
-## 8. Project Layout
-
-```
-school-project-pet-adoption-app/
-├── backend/                    Express 5 API server
-│   ├── migrations/             Auto‑run SQL (createDatabase, createTables)
-│   ├── seed.js                 Demo data: pets, users, admin, applications
-│   ├── src/
-│   │   ├── server.js           App entry — runs migrations, seeds, then listens
-│   │   ├── db.js               Shared `pg` Pool
-│   │   ├── routes/             authRoutes, applicationRoutes, petRoutes
-│   │   ├── controllers/        HTTP handlers
-│   │   ├── services/           Business logic + SQL
-│   │   ├── middleware/         adminMiddleware, userMiddleware (JWT)
-│   │   └── sql/                Parameterized query strings
-│   ├── tests/                  10 Jest suites (175 tests)
-│   └── .env                    ← you create this
-│
-├── frontend/                   React 19 SPA (Create React App)
-│   ├── public/                 Static assets
-│   ├── src/
-│   │   ├── App.js              Router + auth provider
-│   │   ├── pages/              Landing, Login, Register, Home, PetList,
-│   │   │                       ApplicationForm, ApplicationSuccess,
-│   │   │                       Applications, AdminDashboard, Profile
-│   │   ├── components/         Navbar, PrivateRoute
-│   │   ├── context/            AuthContext (login state, localStorage)
-│   │   ├── services/api.js     Axios instance + endpoint helpers
-│   │   └── tests/              4 React Testing Library suites (25 tests)
-│   └── .env                    ← you create this
-│
-├── tests/reports/              Test reports (system + unit)
-├── README.md                   this file
-└── System Testing Plan.md      Manual E2E test specification
-```
-
----
-
-## 9. Running the Tests
+## 8. Running the Tests
 
 ```bash
 # Backend — 175 tests across 10 suites
