@@ -5,9 +5,15 @@ const cors = require('cors');
 const { Pool } = require('pg');
 const authRoutes = require('./routes/authRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
-const { createUsersTable, createPetsTable, createApplicationsTable } = require('../migrations/createTables');
+const {
+  createUsersTable,
+  createPetsTable,
+  addPetsDescriptionColumn,
+  createApplicationsTable,
+} = require('../migrations/createTables');
+const { createDatabase } = require('../migrations/createDatabase');
+const { runSeed } = require('../seed');
 const petRoutes = require("./routes/petRoutes");
-//const petRoutes = require("./routes/petRoutes");
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -24,10 +30,12 @@ async function migrate() {
     console.log('Users table ready');
     await client.query(createPetsTable);
     console.log('Pets table ready');
+    await client.query(addPetsDescriptionColumn);
     await client.query(createApplicationsTable);
     console.log('Applications table ready');
   } catch (err) {
     console.error('Migration error:', err.message);
+    throw err;
   } finally {
     client.release();
   }
@@ -48,10 +56,20 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-migrate().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-});
+async function start() {
+  try {
+    await createDatabase();
+    await migrate();
+    await runSeed();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Startup failed:', err.message);
+    process.exit(1);
+  }
+}
+
+start();
 
 module.exports = app;
