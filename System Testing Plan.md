@@ -46,7 +46,6 @@ User Registration, User Login, Admin Login, View/Search Pets, and Submit Adoptio
    DB_NAME=pet_adoption
    DB_USER=your_postgres_user
    DB_PASSWORD=your_postgres_password
-   JWT_SECRET=your_jwt_secret_key
    ```
 
 4. Create the PostgreSQL database `pet_adoption` and load the provided schema/seed data.
@@ -66,7 +65,7 @@ User Registration, User Login, Admin Login, View/Search Pets, and Submit Adoptio
 **Negative tests:**
 - Submit empty fields -> validation error shown, no record.
 - Submit duplicate email -> "Email already in use" error.
-- Submit password < 6 chars -> client-side validation blocks submit.
+- Submit password < 8 chars -> client-side validation blocks submit.
 
 
 ### Use Case #2: A registered user is able to sign in
