@@ -6,19 +6,6 @@ The app is **PetGram**: a React 19 single‑page app talking to an Express 5 JSO
 
 ---
 
-## Table of Contents
-1. [Prerequisites](#1-prerequisites)
-2. [Tech Stack](#2-tech-stack)
-3. [Get It Running in 5 Minutes](#3-get-it-running-in-5-minutes)
-4. [Environment Variables](#4-environment-variables)
-5. [Useful Commands](#5-useful-commands)
-6. [Demo Accounts](#6-demo-accounts)
-7. [What You Should See](#7-what-you-should-see)
-8. [Project Layout](#8-project-layout)
-9. [Running the Tests](#9-running-the-tests)
-
----
-
 ## 1. Prerequisites
 
 Install these first. The commands below show the minimum supported versions.
